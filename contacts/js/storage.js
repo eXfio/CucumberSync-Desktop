@@ -99,11 +99,35 @@ OC.Contacts = OC.Contacts || {};
 	 * }
 	 */
 	Storage.prototype.getAddressBooksForUser = function() {
+		//FIXME - Implement in Weave backend
+		//set to default values
+		var response = {
+			statusCode: 200,
+			error: false,
+			metadata: {},
+			data: {
+				addressbooks: [
+					{
+						backend: 'local',
+						id: 1,
+						permissions: 31,
+						displayname: 'Contacts'
+					}
+				]
+			}
+		};
+
+		var defer = $.Deferred();
+		defer.resolve(response);
+		return defer.promise();
+		
+		/*
 		return this.requestRoute(
 			'addressbooks/',
 			'GET',
 			{}
 		);
+        */
 	};
 
 	/**
@@ -544,13 +568,34 @@ OC.Contacts = OC.Contacts || {};
 	 *     'sortorder':'3,2,4'
 	 * }
 	 */
-	Storage.prototype.getGroupsForUser = function() {
+    Storage.prototype.getGroupsForUser = function() {
+        //FIXME - Implement in Weave backend
+        //set to default values
+        var response = {
+            statusCode: 200,
+            error: false,
+            metadata: {},
+            data: {
+	            'categories': [],
+	            'favorites': [],
+	            'shared': [],
+	            'lastgroup':'1',
+	            'sortorder':'1'
+            }
+        };
+
+        var defer = $.Deferred();
+	    defer.resolve(response);
+		return defer.promise();
+
+        /*
 		console.log('getGroupsForUser');
 		return this.requestRoute(
 			'groups/',
 			'GET',
 			{}
 		);
+        */
 	};
 
 	/**

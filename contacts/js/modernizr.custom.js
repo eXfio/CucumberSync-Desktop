@@ -464,6 +464,7 @@ window.Modernizr = (function( window, document, undefined ) {
     };
 
 
+    /*
     tests['localstorage'] = function() {
         try {
             localStorage.setItem(mod, mod);
@@ -473,7 +474,8 @@ window.Modernizr = (function( window, document, undefined ) {
             return false;
         }
     };
-
+    */
+  
     tests['sessionstorage'] = function() {
         try {
             sessionStorage.setItem(mod, mod);

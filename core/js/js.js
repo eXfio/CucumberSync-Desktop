@@ -6,9 +6,129 @@
  * The undefined checks fix the broken ie8 console
  */
 
-/* global oc_isadmin */
+//FIXME - port default config to JavaScript
+/*
+$config = array(
+	"oc_debug" => $config->getSystemValue('debug', false) ? 'true' : 'false',
+	"oc_isadmin" => OC_User::isAdminUser(OC_User::getUser()) ? 'true' : 'false',
+	"oc_dataURL" => is_string($dataLocation) ? "\"".$dataLocation."\"" : 'false',
+	"oc_webroot" => "\"".OC::$WEBROOT."\"",
+	"oc_appswebroots" =>  str_replace('\\/', '/', json_encode($apps_paths)), // Ugly unescape slashes waiting for better solution
+	"datepickerFormatDate" => json_encode($l->l('jsdate', null)),
+	"dayNames" =>  json_encode(
+		array(
+			(string)$l->t('Sunday'),
+			(string)$l->t('Monday'),
+			(string)$l->t('Tuesday'),
+			(string)$l->t('Wednesday'),
+			(string)$l->t('Thursday'),
+			(string)$l->t('Friday'),
+			(string)$l->t('Saturday')
+		)
+	),
+	"dayNamesShort" =>  json_encode(
+		array(
+			(string)$l->t('Sun.'),
+			(string)$l->t('Mon.'),
+			(string)$l->t('Tue.'),
+			(string)$l->t('Wed.'),
+			(string)$l->t('Thu.'),
+			(string)$l->t('Fri.'),
+			(string)$l->t('Sat.')
+		)
+	),
+	"dayNamesMin" =>  json_encode(
+		array(
+			(string)$l->t('Su'),
+			(string)$l->t('Mo'),
+			(string)$l->t('Tu'),
+			(string)$l->t('We'),
+			(string)$l->t('Th'),
+			(string)$l->t('Fr'),
+			(string)$l->t('Sa')
+		)
+	),
+	"monthNames" => json_encode(
+		array(
+			(string)$l->t('January'),
+			(string)$l->t('February'),
+			(string)$l->t('March'),
+			(string)$l->t('April'),
+			(string)$l->t('May'),
+			(string)$l->t('June'),
+			(string)$l->t('July'),
+			(string)$l->t('August'),
+			(string)$l->t('September'),
+			(string)$l->t('October'),
+			(string)$l->t('November'),
+			(string)$l->t('December')
+		)
+	),
+	"monthNamesShort" => json_encode(
+		array(
+			(string)$l->t('Jan.'),
+			(string)$l->t('Feb.'),
+			(string)$l->t('Mar.'),
+			(string)$l->t('Apr.'),
+			(string)$l->t('May.'),
+			(string)$l->t('Jun.'),
+			(string)$l->t('Jul.'),
+			(string)$l->t('Aug.'),
+			(string)$l->t('Sep.'),
+			(string)$l->t('Oct.'),
+			(string)$l->t('Nov.'),
+			(string)$l->t('Dec.')
+		)
+	),
+	"firstDay" => json_encode($l->l('firstday', null)) ,
+	"oc_config" => json_encode(
+		array(
+			'session_lifetime'	=> min(\OCP\Config::getSystemValue('session_lifetime', OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')), OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')),
+			'session_keepalive'	=> \OCP\Config::getSystemValue('session_keepalive', true),
+			'version'			=> implode('.', \OCP\Util::getVersion()),
+			'versionstring'		=> OC_Util::getVersionString(),
+			'enable_avatars'	=> \OC::$server->getConfig()->getSystemValue('enable_avatars', true) === true,
+			'lost_password_link'=> \OC::$server->getConfig()->getSystemValue('lost_password_link', null),
+			'modRewriteWorking'	=> (getenv('front_controller_active') === 'true'),
+		)
+	),
+	"oc_appconfig" => json_encode(
+			array("core" => array(
+				'defaultExpireDateEnabled' => $defaultExpireDateEnabled,
+				'defaultExpireDate' => $defaultExpireDate,
+				'defaultExpireDateEnforced' => $enforceDefaultExpireDate,
+				'enforcePasswordForPublicLink' => \OCP\Util::isPublicLinkPasswordRequired(),
+				'sharingDisabledForUser' => \OCP\Util::isSharingDisabledForUser(),
+				'resharingAllowed' => \OCP\Share::isResharingAllowed(),
+				'remoteShareAllowed' => $outgoingServer2serverShareEnabled,
+				'federatedCloudShareDoc' => \OC::$server->getURLGenerator()->linkToDocs('user-sharing-federated')
+				)
+			)
+	),
+	"oc_defaults" => json_encode(
+		array(
+			'entity' => $defaults->getEntity(),
+			'name' => $defaults->getName(),
+			'title' => $defaults->getTitle(),
+			'baseUrl' => $defaults->getBaseUrl(),
+			'syncClientUrl' => $defaults->getSyncClientUrl(),
+			'docBaseUrl' => $defaults->getDocBaseUrl(),
+			'docPlaceholderUrl' => $defaults->buildDocLinkToKey('PLACEHOLDER'),
+			'slogan' => $defaults->getSlogan(),
+			'logoClaim' => $defaults->getLogoClaim(),
+			'shortFooter' => $defaults->getShortFooter(),
+			'longFooter' => $defaults->getLongFooter(),
+			'folder' => OC_Util::getTheme(),
+		)
+	)
+);
 
-var oc_debug;
+*/
+
+window.oc_debug = false;
+window.oc_isadmin = false;
+window.datepickerFormatDate = "jsdate";
+
 var oc_webroot;
 
 var oc_current_user = document.getElementsByTagName('head')[0].getAttribute('data-user');
@@ -26,6 +146,7 @@ if (typeof oc_webroot === "undefined") {
 		oc_webroot = oc_webroot.substr(0, oc_webroot.lastIndexOf('/'));
 	}
 }
+/*
 if (
 	oc_debug !== true || typeof console === "undefined" ||
 	typeof console.log === "undefined"
@@ -39,6 +160,7 @@ if (
 		console[methods[i]] = noOp;
 	}
 }
+*/
 
 /**
 * Sanitizes a HTML string by replacing all potential dangerous characters with HTML entities
@@ -145,7 +267,8 @@ var OC={
 	 * @return {string} Absolute URL for the given relative URL
 	 */
 	generateUrl: function(url, params, options) {
-		var defaultOptions = {
+        console.log("generateUrl()");
+	    var defaultOptions = {
 				escape: true
 			},
 			allOptions = options || {};
@@ -169,11 +292,16 @@ var OC={
 
 		}
 
+        var urlOut = null;
 		if(oc_config.modRewriteWorking == true) {
-			return OC.webroot + _build(url, params);
+			//return OC.webroot + _build(url, params);
+			urlOut = OC.webroot + _build(url, params);
 		}
 
-		return OC.webroot + '/index.php' + _build(url, params);
+		//return OC.webroot + '/index.php' + _build(url, params);
+	    urlOut = OC.webroot + '/index.php' + _build(url, params);
+        console.log("url in: " + url + ", url out: " + urlOut);
+        return urlOut;
 	},
 
 	/**
@@ -1283,7 +1411,8 @@ OC.Breadcrumb={
 	}
 };
 
-if(typeof localStorage !=='undefined' && localStorage !== null){
+//We know Chrome supports local storage using chrome.storage.local so this is always true
+if(true){
 	/**
 	 * User and instance aware localstorage
 	 * @namespace
@@ -1306,7 +1435,7 @@ if(typeof localStorage !=='undefined' && localStorage !== null){
 		 * @param {string} item
 		 */
 		setItem:function(name,item){
-			return localStorage.setItem(OC.localStorage.namespace+name,JSON.stringify(item));
+			return chrome.storage.local.setItem(OC.localStorage.namespace+name,JSON.stringify(item));
 		},
 
 		/**
@@ -1315,7 +1444,7 @@ if(typeof localStorage !=='undefined' && localStorage !== null){
 		 * @param {string} item
 		 */
 		removeItem:function(name,item){
-			return localStorage.removeItem(OC.localStorage.namespace+name);
+			return chrome.storage.local.removeItem(OC.localStorage.namespace+name);
 		},
 
 		/**
@@ -1324,7 +1453,7 @@ if(typeof localStorage !=='undefined' && localStorage !== null){
 		 * @return {null|string}
 		 */
 		getItem:function(name){
-			var item = localStorage.getItem(OC.localStorage.namespace+name);
+			var item = chrome.storage.local.getItem(OC.localStorage.namespace+name);
 			if(item === null) {
 				return null;
 			} else if (typeof JSON === 'undefined') {
@@ -1428,15 +1557,6 @@ function initCore() {
 	 * Set users locale to moment.js as soon as possible
 	 */
 	moment.locale(OC.getLocale());
-
-	if ($.browser.msie || !!navigator.userAgent.match(/Trident\/7\./)) {
-		// for IE10+ that don't have conditional comments
-		// and IE11 doesn't identify as MSIE any more...
-		$('html').addClass('ie');
-	} else if (!!navigator.userAgent.match(/Edge\/12/)) {
-		// for edge
-		$('html').addClass('edge');
-	}
 
 	$(document).on('ajaxError.main', function( event, request, settings ) {
 		if (settings && settings.allowAuthErrors) {
@@ -2077,7 +2197,9 @@ OC.Util.History = {
 };
 
 // fallback to hashchange when no history support
-if (window.history.pushState) {
+// Chrome apps do not support pushState
+//if (window.history.pushState) {
+if (false) {
 	window.onpopstate = _.bind(OC.Util.History._onPopState, OC.Util.History);
 }
 else {
@@ -2226,8 +2348,9 @@ jQuery.fn.tipsy = function(argument) {
 		if(argument.fallback) {
 			options.title = argument.fallback;
 		}
-		// destroy old tooltip in case the title has changed
-		jQuery.fn.tooltip.call(this, 'destroy');
+	    // destroy old tooltip in case the title has changed
+        // FIXME destroy not valid if tooltip not initialised
+		//jQuery.fn.tooltip.call(this, 'destroy');
 		jQuery.fn.tooltip.call(this, options);
 	} else {
 		this.tooltip(argument);

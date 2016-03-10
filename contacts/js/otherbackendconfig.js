@@ -296,7 +296,8 @@ OC.Contacts = OC.Contacts || {};
 	};
 	
 	OtherBackendConfig.prototype.getConnectors = function() {
-		var self = this;
+	  var self = this;
+      var defer = $.Deferred();
 		
 		if (self.connectors === null || self.connectors === undefined) {
 			$.when(self.storage.getConnectors($('#addressbooks-ui-backend').val()))

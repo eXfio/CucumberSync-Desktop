@@ -677,6 +677,8 @@ OC.Contacts = OC.Contacts || {};
 			tmpl.octemplate({id: 'all', type: 'all', num: '', name: t('contacts', 'All')}).appendTo($groupList);
 		}
 		return $.when(this.storage.getGroupsForUser()).then(function(response) {
+            console.log("getGroupsForUser() response");
+            console.dir(response);
 			if (response && !response.error) {
 				self.lastgroup = response.data.lastgroup;
 				self.sortorder = contacts_groups_sortorder;

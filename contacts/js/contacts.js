@@ -2250,8 +2250,8 @@ OC.Contacts = OC.Contacts || {};
 			contact && contact.detach().setChecked(false);
 		});
 		//console.log('deletionQueue', this.deletionQueue);
-		if(!window.onbeforeunload) {
-			window.onbeforeunload = function(e) {
+		if(!window.onClosed) {
+			window.onClosed = function(e) {
 				e = e || window.event;
 				var warn = t('contacts', 'Some contacts are marked for deletion, but not deleted yet. Please wait for them to be deleted.');
 				if (e) {
@@ -2278,7 +2278,7 @@ OC.Contacts = OC.Contacts || {};
 					self.insertContact(contact.getListItemElement());
 				});
 				self.deletionQueue = [];
-				window.onbeforeunload = null;
+				window.onClosed = null;
 			}
 		});
 	};
@@ -2365,7 +2365,7 @@ OC.Contacts = OC.Contacts || {};
 			});
 		}
 
-		window.onbeforeunload = null;
+		window.onClosed = null;
 		return;
 
 	};

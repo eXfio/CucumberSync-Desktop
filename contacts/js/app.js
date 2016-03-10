@@ -151,6 +151,14 @@ OC.notify = function(params) {
 (function(window, $, OC) {
 	'use strict';
 
+    //FIXME - Support config. See windows ready function
+    window.contacts_groups_sortorder = [];
+    window.contacts_lastgroup = 'all';
+    window.contacts_sortby = 'fn';
+    window.contacts_properties_indexed = true;
+    window.contacts_categories_indexed = false;
+    window.lang = 'en';
+
 	OC.Contacts = OC.Contacts || {
 		init:function() {
 			if(oc_debug === true) {
@@ -168,11 +176,14 @@ OC.notify = function(params) {
 				$('#app-settings-content'),
 				$('#addressBookTemplate')
 			);
+            //OtherBackendConfig not required
+            /*
 			this.otherBackendConfig = new OC.Contacts.OtherBackendConfig(
 				this.storage,
 				this.addressBooks,
 				$('#addressBookConfigTemplate')
 			);
+            */
 			this.contacts = new OC.Contacts.ContactList(
 				this.storage,
 				this.addressBooks,
@@ -353,11 +364,6 @@ OC.notify = function(params) {
 		},
 		bindEvents: function() {
 			var self = this;
-
-			// Should fix Opera check for delayed delete.
-			$(window).unload(function (){
-				$(window).trigger('beforeunload');
-			});
 
 			this.hashChange = function() {
 				console.log('hashchange', window.location.hash);
@@ -1005,7 +1011,7 @@ OC.notify = function(params) {
 			});
 
 			this.$contactList.on('mouseenter', 'tr.contact', function(event) {
-				if ($(this).data('obj').hasPermission(OC.PERMISSION_DELETE)) {
+				if ($(this).data('obj') && $(this).data('obj').hasPermission(OC.PERMISSION_DELETE)) {
 					var $td = $(this).find('td').filter(':visible').last();
 					$('<a />').addClass('icon-delete svg delete action').appendTo($td);
 				}
@@ -1138,7 +1144,9 @@ OC.notify = function(params) {
 				addContact();
 			});
 
+            console.log("registering event listener for .add-contact");
 			this.$groupList.on('click keydown', '.add-contact', function(event) {
+                console.log("click event for .add-contact");
 				if(wrongKey(event)) {
 					return;
 				}
@@ -1704,12 +1712,16 @@ OC.notify = function(params) {
 
 $(document).ready(function() {
 
-	$.getScript(OC.generateUrl('apps/contacts/ajax/config.js'))
-	.done(function() {
+    //FIXME - Support config
+    /*
+    $.getScript(OC.generateUrl('apps/contacts/ajax/config.js'))
+    .done(function() {
 		OC.Contacts.init();
 	})
 	.fail(function(jqxhr, settings, exception) {
 		console.log('Failed loading settings.', jqxhr, settings, exception);
 	});
+    */
+    OC.Contacts.init();
 
 });

@@ -36,6 +36,7 @@
 		 * @param callback function to call after the shares were loaded
 		 */
 		loadIcons:function(itemType, fileList, callback) {
+            /*
 			// Load all share icons
 			$.get(
 				OC.filePath('core', 'ajax', 'share.php'),
@@ -56,6 +57,7 @@
 					}
 				}
 			);
+            */
 		},
 		/**
 		 * Updates the files' "Share" icons according to the known

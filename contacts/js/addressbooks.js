@@ -788,7 +788,9 @@ OC.Contacts = OC.Contacts || {};
 		var self = this;
 		var defer = $.Deferred();
 		$.when(this.storage.getAddressBooksForUser()).then(function(response) {
-			if(!response.error) {
+            console.log("getAddressBooksForUser() response");
+            console.dir(response);
+			if(response && !response.error) {
 				$.each(response.data.addressbooks, function(idx, addressBook) {
 					self.insertAddressBook(addressBook);
 				});
