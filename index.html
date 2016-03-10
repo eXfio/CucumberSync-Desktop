@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html style="" class="ng-csp js flexbox flexboxlegacy canvas webgl no-touch geolocation draganddrop rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage svg inlinesvg smil svgclippaths texttrackapi track" data-placeholder-focus="false" lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>
+			Contacts - ownCloud		</title>
+<!--
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="referrer" content="never">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta name="apple-itunes-app" content="app-id=543672169">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-title" content="Contacts">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="theme-color" content="#1d2d44">
+		<link rel="shortcut icon" type="image/png" href="https://cucumbersync.com/portal/core/img/favicon.png">
+		<link rel="apple-touch-icon-precomposed" href="https://cucumbersync.com/portal/core/img/favicon-touch.png">
+					<link rel="stylesheet" href="index-core_files/styles_002.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/header.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/mobile.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/icons.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/fonts.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/apps.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/fixes.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/multiselect.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/jquery-ui.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/jquery-ui-fixes.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/tooltip.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/share_002.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/style.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/versions.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/style_002.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/mediaelementplayer.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/colorbox.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/firstrunwizard.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/styles.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/jquery_004.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/share.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/multi-select.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/jquery.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/contacts.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/jquery_003.css" media="screen">
+					<link rel="stylesheet" href="index-core_files/jquery_002.css" media="screen">
+							<script src="index-core_files/oc.js"></script>
+					<script src="index-core_files/jquery_008.js"></script>
+					<script src="index-core_files/jquery-migrate.js"></script>
+					<script src="index-core_files/jquery-ui.js"></script>
+					<script src="index-core_files/underscore.js"></script>
+					<script src="index-core_files/moment-with-locales.js"></script>
+					<script src="index-core_files/handlebars.js"></script>
+					<script src="index-core_files/md5_002.js"></script>
+					<script src="index-core_files/tooltip.js"></script>
+					<script src="index-core_files/backbone.js"></script>
+					<script src="index-core_files/placeholders.js"></script>
+					<script src="index-core_files/compatibility.js"></script>
+					<script src="index-core_files/jquery_007.js"></script>
+					<script src="index-core_files/oc-dialogs.js"></script>
+					<script src="index-core_files/js.js"></script>
+					<script src="index-core_files/l10n.js"></script>
+					<script src="index-core_files/octemplate.js"></script>
+					<script src="index-core_files/eventsource.js"></script>
+					<script src="index-core_files/config.js"></script>
+					<script src="index-core_files/search.js"></script>
+					<script src="index-core_files/oc-requesttoken.js"></script>
+					<script src="index-core_files/apps.js"></script>
+					<script src="index-core_files/mimetype.js"></script>
+					<script src="index-core_files/mimetypelist.js"></script>
+					<script src="index-core_files/snap.js"></script>
+					<script src="index-core_files/backbone.js"></script>
+					<script src="index-core_files/oc-backbone.js"></script>
+					<script src="index-core_files/backgroundjobs.js"></script>
+					<script src="index-core_files/shareconfigmodel.js"></script>
+					<script src="index-core_files/shareitemmodel.js"></script>
+					<script src="index-core_files/sharedialogresharerinfoview.js"></script>
+					<script src="index-core_files/sharedialoglinkshareview.js"></script>
+					<script src="index-core_files/sharedialogexpirationview.js"></script>
+					<script src="index-core_files/sharedialogshareelistview.js"></script>
+					<script src="index-core_files/sharedialogview.js"></script>
+					<script src="index-core_files/share_002.js"></script>
+					<script src="index-core_files/previewplugin.js"></script>
+					<script src="index-core_files/viewer.js"></script>
+					<script src="index-core_files/jquery_005.js"></script>
+					<script src="index-core_files/firstrunwizard.js"></script>
+					<script src="index-core_files/app_002.js"></script>
+					<script src="index-core_files/notification.js"></script>
+					<script src="index-core_files/placeholder.js"></script>
+					<script src="index-core_files/md5_002.js"></script>
+					<script src="index-core_files/jquery_004.js"></script>
+					<script src="index-core_files/avatar.js"></script>
+					<script src="index-core_files/tags.js"></script>
+					<script src="index-core_files/placeholder.js"></script>
+					<script src="index-core_files/avatar.js"></script>
+					<script src="index-core_files/share.js"></script>
+					<script src="index-core_files/modernizr.js"></script>
+					<script src="index-core_files/app.js"></script>
+					<script src="index-core_files/addressbooks.js"></script>
+					<script src="index-core_files/contacts.js"></script>
+					<script src="index-core_files/storage.js"></script>
+					<script src="index-core_files/groups.js"></script>
+					<script src="index-core_files/jquery.js"></script>
+					<script src="index-core_files/otherbackendconfig.js"></script>
+					<script src="index-core_files/jquery_003.js"></script>
+					<script src="index-core_files/md5.js"></script>
+					<script src="index-core_files/jquery_002.js"></script>
+					<script src="index-core_files/jquery_006.js"></script>
+					<script src="index-core_files/combobox.js"></script>
+-->
+
+					<link rel="stylesheet" href="core/css/global.css" media="screen">
+					<link rel="stylesheet" href="core/css/styles.css" media="screen">
+					<link rel="stylesheet" href="core/css/header.css" media="screen">
+					<link rel="stylesheet" href="core/css/mobile.css" media="screen">
+					<link rel="stylesheet" href="core/css/icons.css" media="screen">
+					<link rel="stylesheet" href="core/css/fonts.css" media="screen">
+					<link rel="stylesheet" href="core/css/apps.css" media="screen">
+					<link rel="stylesheet" href="core/css/fixes.css" media="screen">
+					<link rel="stylesheet" href="core/css/share.css" media="screen">
+					<link rel="stylesheet" href="core/css/multiselect.css" media="screen">
+					<link rel="stylesheet" href="core/bower_components/jquery-ui/themes/base/jquery-ui.css" media="screen">
+					<link rel="stylesheet" href="core/css/jquery-ui-fixes.css" media="screen">
+					<link rel="stylesheet" href="core/css/tooltip.css" media="screen">
+					<link rel="stylesheet" href="contacts/css/share.css" media="screen">
+					<link rel="stylesheet" href="contacts/css/multi-select.css" media="screen">
+					<link rel="stylesheet" href="contacts/css/contacts.css" media="screen">
+
+					<script src="core/bower_components/jquery/jquery.js"></script>
+					<script src="core/bower_components/jquery-ui/ui/jquery-ui.custom.js"></script>
+					<script src="core/bower_components/underscore/underscore.js"></script>
+					<script src="core/bower_components/moment/min/moment-with-locales.js"></script>
+					<script src="core/bower_components/handlebars/handlebars.js"></script>
+					<script src="core/bower_components/snapjs/dist/latest/snap.js"></script>
+					<script src="core/js/oc-dialogs.js"></script>
+					<script src="core/js/js.js"></script>
+					<script src="core/js/tags.js"></script>
+					<script src="core/js/placeholder.js"></script>
+					<script src="core/js/l10n.js"></script>
+					<script src="core/js/octemplate.js"></script>
+					<script src="core/js/share.js"></script>
+					<script src="contacts/bower_components/ui-multiselect/src/jquery.multiselect.js"></script>
+					<script src="contacts/bower_components/blueimp-md5/js/md5.min.js"></script>
+					<script src="contacts/bower_components/jcrop/js/jquery.Jcrop.min.js"></script>
+					<script src="contacts/bower_components/blueimp-file-upload/js/jquery.fileupload.js"></script>
+					<script src="contacts/bower_components/combobox.js"></script>
+					<script src="contacts/js/share.js"></script>
+					<script src="contacts/js/modernizr.custom.js"></script>
+					<script src="contacts/js/app.js"></script>
+					<script src="contacts/js/addressbooks.js"></script>
+					<script src="contacts/js/contacts.js"></script>
+					<script src="contacts/js/storage.js"></script>
+					<script src="contacts/js/groups.js"></script>
+					<script src="contacts/js/jquery.ocaddnew.js"></script>
+					<script src="contacts/js/otherbackendconfig.js"></script>
+
+    </head>
+	<body id="body-user">
+	<div id="notification-container">
+		<div id="notification"></div>
+	</div>
+	<header role="banner"><div id="header">
+			<a href="index.html" id="owncloud" tabindex="1">
+				<div class="logo-icon svg">
+					<h1 class="hidden-visually">
+						ownCloud					</h1>
+				</div>
+			</a>
+
+			<a href="#" class="header-appname-container menutoggle" tabindex="2">
+				<h1 class="header-appname">
+					Contacts				</h1>
+				<div class="icon-caret svg"></div>
+			</a>
+
+			<div id="logo-claim" style="display:none;"></div>
+			<div id="settings" class="svg">
+				<div id="expand" tabindex="6" role="link" class="menutoggle">
+										<div class="avatardiv" style="display: none">
+											</div>
+										<span id="expandDisplayName">admin</span>
+					<img class="svg" alt="" src="core/img/actions/caret.svg">
+				</div>
+				<div class="menu" id="expanddiv">
+				<ul>
+									<li>
+						<a href="https://cucumbersync.com/portal/index.php/settings/personal">
+							<img class="svg" alt="" src="core/settings/img/personal.svg">
+							Personal						</a>
+					</li>
+									<li>
+						<a href="https://cucumbersync.com/portal/index.php/settings/users">
+							<img class="svg" alt="" src="core/settings/img/users.svg">
+							Users						</a>
+					</li>
+									<li>
+						<a href="https://cucumbersync.com/portal/index.php/settings/admin">
+							<img class="svg" alt="" src="core/settings/img/admin.svg">
+							Admin						</a>
+					</li>
+									<li>
+						<a href="https://cucumbersync.com/portal/index.php/settings/help">
+							<img class="svg" alt="" src="core/settings/img/help.svg">
+							Help						</a>
+					</li>
+									<li>
+						<a id="logout" href="https://cucumbersync.com/portal/index.php?logout=true&amp;requesttoken=MBcbBXJmADc%2FLD8BQy5JaA4PfSstFVgCUVEKX25%2B%3ADciQE1TzxBxE7h%2BCVbOFFbn4cfkl40">
+							<img class="svg" alt="" src="core/img/actions/logout.svg">
+							Log out						</a>
+					</li>
+				</ul>
+				</div>
+			</div>
+
+			<div class="notifications hidden"><div class="notifications-button menutoggle"><img class="svg" alt="Dismiss" src="notifications/img/notifications.svg"></div><div class="notification-container menu"><div class="emptycontent"><h2>No notifications</h2></div><div class="notification-wrapper"></div></div></div><form class="searchbox" action="#" method="post" role="search">
+				<label for="searchbox" class="hidden-visually">
+					Search				</label>
+				<input style="display: none;" id="searchbox" class="svg" name="query" autocomplete="off" tabindex="5" type="search">
+			</form>
+		</div></header>
+
+		<nav role="navigation"><div style="display: none;" class="menu" id="navigation">
+			<div id="apps" class="svg">
+				<ul>
+                   <!--
+									<li data-id="files_index">
+						<a href="https://cucumbersync.com/portal/index.php/apps/files" tabindex="3">
+							<img class="app-icon svg" alt="" src="index-core_files/files.svg">
+							<div class="icon-loading-dark" style="display:none;"></div>
+							<span>
+								Files							</span>
+						</a>
+					</li>
+									<li data-id="activity">
+						<a href="https://cucumbersync.com/portal/index.php/apps/activity/" tabindex="3">
+							<img class="app-icon svg" alt="" src="index-core_files/activity.svg">
+							<div class="icon-loading-dark" style="display:none;"></div>
+							<span>
+								Activity							</span>
+						</a>
+					</li>
+									<li data-id="gallery">
+						<a href="https://cucumbersync.com/portal/index.php/apps/gallery/" tabindex="3">
+							<img class="app-icon svg" alt="" src="index-core_files/app.svg">
+							<div class="icon-loading-dark" style="display:none;"></div>
+							<span>
+								Gallery							</span>
+						</a>
+					</li>
+									<li data-id="calendar_index">
+						<a href="https://cucumbersync.com/portal/index.php/apps/calendar/" tabindex="3">
+							<img class="app-icon svg" alt="" src="index-core_files/calendar.svg">
+							<div class="icon-loading-dark" style="display:none;"></div>
+							<span>
+								Calendar							</span>
+						</a>
+					</li>
+                     -->
+									<li data-id="contacts">
+						<a href="https://cucumbersync.com/portal/index.php/apps/contacts/" tabindex="3" class="active">
+							<img class="app-icon svg" alt="" src="contacts/img/contacts.svg">
+							<div class="icon-loading-dark" style="display:none;"></div>
+							<span>
+								Contacts							</span>
+						</a>
+					</li>
+                    <!--
+													<li id="apps-management">
+						<a href="https://cucumbersync.com/portal/index.php/settings/apps" tabindex="4">
+							<img class="app-icon svg" alt="" src="index-core_files/apps.svg">
+							<div class="icon-loading-dark" style="display:none;"></div>
+							<span>
+								Apps							</span>
+						</a>
+					</li>
+				    -->
+				</ul>
+			</div>
+		</div></nav>
+
+		<div id="content-wrapper">
+			<div id="content" class="app-contacts" role="main">
+
+
+				<div id="app">
+	<div id="app-navigation" class="">
+		<ul id="grouplist" class="ui-sortable">
+			<li class="special">
+				<a role="button" class="add-contact">
+				  New contact				</a>
+			</li>
+			<li class="special">
+				<ul aria-disabled="false" style="display: inline-block; width: auto; height: auto;" class="oc-addnew"><li><a class="oc-addnew-init">New group</a></li><li><input style="display: none;" class="add-group hidden oc-addnew-name" tabindex="0" autofocus="" placeholder="Group name" title="New group" type="text"><button style="display: none;" class="new-button primary icon-checkmark-white"></button></li></ul>
+			</li>
+		<li class="group active" data-type="all" data-id="all">
+		<a class="name" title="All" role="button">All</a>
+		<span class="utils">
+			<a title="" data-original-title="" class="icon-delete action delete tooltipped rightwards"></a>
+			<a title="" data-original-title="" class="icon-rename action edit tooltipped rightwards"></a>
+			<span class="action numcontacts">0</span>
+		</span>
+	</li><li style="display: none;" class="group ui-droppable" data-type="fav" data-id="fav">
+		<a class="name" title="Favorites" role="button">Favorites</a>
+		<span class="utils">
+			<a class="icon-delete action delete tooltipped rightwards"></a>
+			<a class="icon-rename action edit tooltipped rightwards"></a>
+			<span class="icon-starred starred action"></span><span class="action numcontacts">0</span>
+		</span>
+	</li><li class="group" data-type="uncategorized" data-id="uncategorized">
+		<a class="name" title="Not grouped" role="button">Not grouped</a>
+		<span class="utils">
+			<a class="icon-delete action delete tooltipped rightwards"></a>
+			<a class="icon-rename action edit tooltipped rightwards"></a>
+			<span class="action numcontacts"></span>
+		</span>
+	</li></ul>
+		<div id="app-settings">
+			<div id="app-settings-header">
+				<button class="settings-button" tabindex="0"></button>
+			</div>
+			<div id="app-settings-content">
+				<div id="addressbooks">
+				<h2 data-id="addressbooks" tabindex="0" role="button">Address books</h2>
+					<ul class="addressbooklist">
+					<li data-id="1" data-backend="local" data-permissions="31">
+	<input name="active" checked="checked" title="Active" type="checkbox">
+	<label>Contacts</label>
+	<span class="actions">
+		<a data-original-title="Share" title="" class="icon-share share action" data-possible-permissions="31" data-item="1" data-item-type="addressbook"></a>
+		<a href="https://cucumbersync.com/portal/index.php/apps/contacts/addressbook/local/1/export" data-original-title="Export" title="" class="icon-download download action"></a>
+		<a data-original-title="CardDAV link" title="" class="icon-public carddav action"></a>
+		<a data-original-title="Edit" title="" class="icon-rename edit action"></a>
+		<a data-original-title="Delete" title="" class="icon-delete delete action"></a>
+	</span>
+</li></ul>
+					<ul aria-disabled="false" style="display: inline-block; width: auto; height: auto;" class="oc-addnew"><li><a class="oc-addnew-init">Add Address Book</a></li><li><input class="oc-addnew-name" style="display: none;" tabindex="0" autofocus="" id="add-address-book" placeholder="Display name" title="Add Address Book" type="text"><button style="display: none;" class="new-button primary icon-checkmark-white"></button></li></ul>
+									</div>
+				<div id="import">
+					<ul class="oc-addnew">
+						<li id="import-contacts"><a class="oc-addnew-init">Import</a></li>
+					</ul>
+				</div>
+			</div> <!-- app-settings-content -->
+		</div>
+	</div>
+	<div style="transition: all 0.3s ease 0s;" id="app-content" class=""><div id="app-navigation-toggle" class="icon-menu" style="display:none;"></div>
+		<table style="display: table;" id="contactlist">
+			<thead>
+				<tr id="contactsHeader" class="">
+					<td colspan="1" class="name">
+						<span class="actions_left">
+						<input class="toggle" id="select_all" title="(De-)select all" type="checkbox">
+						<label for="select_all"></label>
+						<select class="action sort permanent" name="sort" title="Sort order">
+							<option selected="selected" value="fn">Display name</option>
+							<option value="fl">First- Lastname</option>
+							<option value="lf">Last-, Firstname</option>
+						</select>
+						</span>
+						
+						<span style="display: none;" class="actions">
+							<a class="icon-delete delete svg action text permanent">
+								Delete								<img class="svg" alt="Delete" src="core/img/actions/delete.svg">
+							</a>
+							<select class="groups svg action text permanent shared" name="groups">
+								<option value="-1" disabled="disabled" selected="selected">Groups</option>
+							</select>
+							<a class="icon-download download svg action text permanent">Download</a>
+							<a class="icon-rename action svg text permanent merge edit">Merge</a>
+						</span>
+					</td>
+					<td class="info email">Email</td>
+					<td class="info tel">Phone</td>
+					<td class="info adr">Address</td>
+					<td class="info categories">Group</td>
+				</tr>
+			</thead>
+			<tbody>
+			<tr style="display: table-row;" class="contact" data-id="1" data-parent="1" data-backend="local">
+		<td class="name thumbnail ui-draggable">
+			<input id="select-1" name="id" value="1" type="checkbox">
+			<label for="select-1"></label>
+			<div style="height: 32px; background-color: rgb(85, 150, 246); color: rgb(255, 255, 255); font-weight: normal; text-align: center; line-height: 32px; font-size: 17.6px;" class="avatar">K</div>
+			<a href="#1" class="nametext">Kors van Beem</a>
+		</td>
+		<td class="email">
+			<a href="mailto:"></a>
+			<a class="icon-mail svg mailto hidden" title="Compose mail"></a>
+		</td>
+		<td class="tel"></td>
+		<td class="adr"></td>
+		<td class="categories"></td>
+	</tr></tbody>
+		</table>
+		<div class="hidden popup" id="ninjahelp">
+			<a class="close" tabindex="0" role="button" title="Close"></a>
+			<h2>Keyboard shortcuts</h2>
+			<div class="help-section">
+				<h3>Navigation</h3>
+				<dl>
+					<dt>j/Down</dt>
+					<dd>Next contact in list</dd>
+					<dt>k/Up</dt>
+					<dd>Previous contact in list</dd>
+					<dt>o</dt>
+					<dd>Expand/collapse current addressbook</dd>
+					<dt>n/PageDown</dt>
+					<dd>Next addressbook</dd>
+					<dt>p/PageUp</dt>
+					<dd>Previous addressbook</dd>
+				</dl>
+			</div>
+			<div class="help-section">
+				<h3>Actions</h3>
+				<dl>
+					<dt>r</dt>
+					<dd>Refresh contacts list</dd>
+					<dt>a</dt>
+					<dd>Add new contact</dd>
+					<!-- dt>Shift-a</dt>
+					<dd>Add new addressbook</dd -->
+					<dt>Shift-Delete</dt>
+					<dd>Delete current contact</dd>
+				</dl>
+			</div>
+		</div>
+		<div style="display: none;" id="firstrun" class="hidden">
+			<div>
+				<h3>You have no contacts in your address book or your address book is disabled.</h3>
+				<p>Add a new contact or import existing contacts from a file (VCF, CSV or LDIF).</p>
+				<div id="selections">
+					<input class="add-contact text" value="New contact" type="button">
+					<input id="oc-import-nocontact" value="Import contacts" type="button">
+				</div>
+			</div>
+		</div>
+		<form class="float" name="file_upload_form" id="file_upload_form" method="PUT" target="file_upload_target">
+			<input name="requesttoken" value="MBcbBXJmADc/LD8BQy5JaA4PfSstFVgCUVEKX25+:DciQE1TzxBxE7h+CVbOFFbn4cfkl40" type="hidden">
+			<input name="MAX_FILE_SIZE" value="537919488" id="max_upload" type="hidden">
+			<input name="max_human_file_size" value="513 MB" type="hidden">
+			<input id="contactphoto_fileupload" accept="image/*" name="imagefile" type="file">
+		</form>
+		<iframe name="file_upload_target" id="file_upload_target" src=""></iframe>
+	</div> <!-- app-content -->
+</div> <!-- app -->
+
+
+<script id="cropBoxTemplate" type="text/template">
+	<form id="cropform"
+		class="coords"
+		method="post"
+		enctype="multipart/form-data"
+		>
+		<fieldset id="coords">
+		<input type="hidden" id="x" name="x" value="" />
+		<input type="hidden" id="y" name="y" value="" />
+		<input type="hidden" id="w" name="w" value="" />
+		<input type="hidden" id="h" name="h" value="" />
+		</fieldset>
+	</form>
+</script>
+
+<script id="addGroupTemplate" type="text/template">
+	<div id="dialog-form" title="Add group">
+		<fieldset>
+			<input type="text" name="name" id="name" />
+		</fieldset>
+	</div>
+</script>
+
+<script id="groupListItemTemplate" type="text/template">
+	<li class="group" data-type="{type}" data-id="{id}">
+		<a class="name" title="{name}" role="button">{name}</a>
+		<span class="utils">
+			<a class="icon-delete action delete tooltipped rightwards"></a>
+			<a class="icon-rename action edit tooltipped rightwards"></a>
+			<span class="action numcontacts">{num}</span>
+		</span>
+	</li>
+</script>
+
+<script id="mergeContactsTemplate" type="text/template">
+	<div id="dialog-merge-contacts" title="Merge contacts">
+		<p>Which contact should the data be merged into?</p>
+		<fieldset>
+			<ul class="mergelist">
+				<li><input id="mergee_{idx}" type="radio" name="contact" value="{id}"><label for="mergee_{idx}" >{displayname}</label></li>
+			</ul>
+		</fieldset>
+		<p>
+		<input type="checkbox" id="delete_other" name="delete_other" />
+			<label for="delete_other">Delete the other(s) after successful merge?</label>
+		</p>
+	</div>
+</script>
+
+<script id="contactListItemTemplate" type="text/template">
+	<tr class="contact" data-id="{id}" data-parent="{parent}" data-backend="{backend}">
+		<td class="name thumbnail">
+			<input type="checkbox" id="select-{id}" name="id" value="{id}" />
+			<label for="select-{id}"></label>
+			<div class="avatar"></div>
+			<a href="#{id}" class="nametext">{name}</a>
+		</td>
+		<td class="email">
+			<a href="mailto:{email}">{email}</a>
+			<a class="icon-mail svg mailto hidden" title="Compose mail"></a>
+		</td>
+		<td class="tel">{tel}</td>
+		<td class="adr">{adr}</td>
+		<td class="categories">{categories}</td>
+	</tr>
+</script>
+
+<script id="contactDragItemTemplate" type="text/template">
+	<div class="dragContact thumbnail" data-id="{id}">
+		{name}
+	</div>
+</script>
+
+<script id="contactFullTemplate" type="text/template">
+	<tr><td colspan="6">
+	<form action="/portal/contacts/index.php" method="post" enctype="multipart/form-data">
+	<section id="contact" data-id="{id}">
+	<header>
+		<a class="delete">
+			Delete			<img class="svg" alt="Delete" src="core/img/actions/delete.svg" />
+		</a>
+	</header>
+	<ul>
+		<li>
+			<div id="photowrapper" class="propertycontainer" data-element="photo">
+				<ul id="phototools" class="transparent hidden">
+					<li><a class="svg icon-delete action delete" title="Delete current photo"></a></li>
+					<li><a class="svg icon-rename action edit" title="Edit current photo"></a></li>
+					<li><a class="svg icon-upload action upload" title="Upload new photo"></a></li>
+					<li><a class="svg icon-folder action cloud icon-cloud" title="Select photo from Files"></a></li>
+				</ul>
+				<a class="favorite {favorite} tooltipped" title="Favorite"></a>
+			</div>
+			<div class="singleproperties">
+				<h3>Name</h3>
+				<label class="propertyname"></label>
+				<input data-element="fn" class="fullname value propertycontainer" type="text" name="value" value="{name}" placeholder="Name" required />
+				<a class="icon-rename action edit"></a>
+				<fieldset class="n hidden editor propertycontainer" data-element="n">
+					<ul>
+						<li>
+							<input class="value rightwards onfocus" type="text" id="n_1" name="value[1]" value="{n1}" 
+								placeholder="First name" />
+						</li>
+						<li>
+							<input class="value rightwards onfocus" type="text" id="n_2" name="value[2]" value="{n2}" 
+								placeholder="Additional names" />
+						</li>
+						<li>
+							<input class="value rightwards onfocus" type="text" id="n_0" name="value[0]" value="{n0}" 
+								placeholder="Last name" />
+						</li>
+					</ul>
+					<input class="value" type="hidden" id="n_3" name="value[3]" value="{n3}" />
+					<input class="value" type="hidden" id="n_4" name="value[4]" value="{n4}" />
+				</fieldset>
+			</div>
+			<div class="singleproperties">
+				<div class="groupscontainer propertycontainer" data-element="categories">
+					<h3>Groups</h3>
+					<label class="propertyname"></label>
+					<select class="hidden" id="contactgroups" name="value" multiple></select>
+				</div>
+			</div>
+			<div class="singleproperties">
+				<div class="addressbookcontainer propertycontainer" data-element="categories">
+					<h3>Address book</h3>
+					<label class="propertyname"></label>
+					<select class="hidden" id="contactaddressbooks" name="value"></select>
+				</div>
+			</div>
+			<div class="singleproperties">
+				<dd data-element="nickname" class="propertycontainer">
+					<h3>Nickname</h3>
+					<label class="propertyname"></label>
+					<input class="value rightwards onfocus" type="text" name="value" value="{nickname}" required />
+					<span class="listactions">
+						<a role="button" class="icon-delete action delete"></a>
+					</span>
+				</dd>
+			</div>
+			<div class="singleproperties">
+				<dd data-element="title" class="propertycontainer">
+					<h3>Title</h3>
+					<label class="propertyname"></label>
+					<input class="value rightwards onfocus" type="text" name="value" value="{title}" required />
+					<span class="listactions">
+						<a role="button" class="icon-delete action delete"></a>
+					</span>
+				</dd>
+			</div>
+			<div class="singleproperties">
+				<dd data-element="org" class="propertycontainer">
+					<h3>Organization</h3>
+					<label class="propertyname"></label>
+					<input class="value rightwards onfocus" type="text" name="value" value="{org}" required />
+					<span class="listactions">
+						<a role="button" class="icon-delete action delete"></a>
+					</span>
+				</dd>
+			</div>
+			<div class="singleproperties">
+				<dd data-element="bday" class="propertycontainer">
+					<h3>Birthday</h3>
+					<label class="propertyname"></label>
+					<input class="value rightwards onfocus" type="text" name="value" value="{bday}" required />
+					<span class="listactions">
+						<a role="button" class="icon-delete action delete"></a>
+					</span>
+				</dd>
+			</div>
+		</li>
+		<li>
+			<ul class="email propertylist hidden">
+				<h3>Email</h3>
+			</ul>
+		</li>
+		<li>
+			<ul class="tel propertylist hidden">
+				<h3>Phone</h3>
+			</ul>
+		</li>
+		<li>
+			<ul class="adr propertylist hidden">
+				<h3>Address</h3>
+			</ul>
+		</li>
+		<li>
+			<ul class="url propertylist hidden">
+				<h3>Website</h3>
+			</ul>
+		</li>
+		<li>
+			<ul class="cloud propertylist hidden">
+				<h3>Federated Cloud ID</h3>
+			</ul>
+		</li>
+		<li>
+			<ul class="impp propertylist hidden">
+				<h3>Instant messaging</h3>
+			</ul>
+		</li>
+		<li>
+			<ul class="notes propertylist">
+				<section class="note propertycontainer" data-element="note">
+					<textarea class="value" placeholder="Notes go here...">{note}</textarea>
+				</section>
+			</ul>
+		</li>
+	</ul>
+	<footer>
+		<select class="add action text button" id="addproperty">
+			<option value="">Add field...</option>
+			<option value="ORG">Organization</option>
+			<option value="TITLE">Title</option>
+			<option value="NICKNAME">Nickname</option>
+			<option value="BDAY">Birthday</option>
+			<option value="TEL">Phone</option>
+			<option value="EMAIL">Email</option>
+			<option value="IMPP">Instant Messaging</option>
+			<option value="ADR">Address</option>
+			<option value="NOTE">Note</option>
+			<option value="URL">Web site</option>
+			<option value="CLOUD">Federated Cloud ID</option>
+		</select>
+		<a class="cancel">
+			Cancel			<img class="svg" alt="Cancel" src="core/img/actions/close.svg" />
+		</a>
+		<a class="close">
+			Close			<img class="svg" alt="Close" src="core/img/actions/checkmark.svg" />
+		</a>
+		<a class="export">
+			Download			<img class="svg" alt="Download" src="core/img/actions/download.svg" />
+		</a>
+	</footer>
+	</section>
+	</form>
+	</td></tr>
+</script>
+
+<script id="contactDetailsTemplate" class="hidden" type="text/template">
+	<div class="email" type="text/template">
+		<li data-element="email" data-checksum="{checksum}" class="propertycontainer">
+			<span class="parameters">
+				<input type="checkbox" class="parameter tooltipped rightwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="Preferred" />
+				<select class="rtl type parameter" data-parameter="TYPE" name="parameters[TYPE][]">
+					<option value="HOME">Home</option>
+<option value="WORK">Work</option>
+<option value="INTERNET">Internet</option>
+<option value="OTHER">Other</option>
+				</select>
+			</span>
+			<input type="email" class="nonempty value" name="value" value="{value}" x-moz-errormessage="Please specify a valid email address." placeholder="someone@example.com" required />
+			<span class="listactions">
+				<a class="icon-mail action mail tooltipped leftwards" title="Mail to address"></a>
+				<a role="button" class="icon-delete action delete tooltipped leftwards" title="Delete email address"></a>
+			</span>
+		</li>
+	</div>
+	<div class="cloud" type="text/template">
+		<li data-element="cloud" data-checksum="{checksum}" class="propertycontainer">
+			<span class="parameters">
+				<input type="checkbox" class="parameter tooltipped rightwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="Preferred" />
+				<select class="rtl type parameter" data-parameter="TYPE" name="parameters[TYPE][]">
+					<option value="HOME">Home</option>
+<option value="WORK">Work</option>
+<option value="OTHER">Other</option>
+				</select>
+			</span>
+			<input type="text" class="nonempty value" name="value" value="{value}" x-moz-errormessage="Please specify a valid Federated Cloud ID." placeholder="username@example.com/owncloud" required />
+			<span class="listactions">
+				<a role="button" class="icon-delete action delete tooltipped leftwards" title="Delete Federated Cloud ID"></a>
+			</span>
+		</li>
+	</div>
+	<div class="tel" type="text/template">
+		<li data-element="tel" data-checksum="{checksum}" class="propertycontainer">
+			<span class="parameters">
+				<input type="checkbox" class="parameter tooltipped rightwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="Preferred" />
+				<select class="rtl type parameter" data-parameter="TYPE" name="parameters[TYPE][]">
+					<option value="HOME">Home</option>
+<option value="CELL">Mobile</option>
+<option value="WORK">Work</option>
+<option value="TEXT">Text</option>
+<option value="VOICE">Voice</option>
+<option value="MSG">Message</option>
+<option value="FAX">Fax</option>
+<option value="VIDEO">Video</option>
+<option value="PAGER">Pager</option>
+<option value="OTHER">Other</option>
+				</select>
+			</span>
+			<input type="text" class="nonempty value" name="value" value="{value}" placeholder="Enter phone number" required />
+			<span class="listactions">
+				<a role="button" class="icon-delete action delete tooltipped leftwards"></a>
+			</span>
+		</li>
+	</div>
+	<div class="url" type="text/template">
+		<li data-element="url" data-checksum="{checksum}" class="propertycontainer">
+			<span class="parameters">
+				<input type="checkbox" class="parameter tooltipped rightwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="Preferred" />
+				<select class="rtl type parameter" data-parameter="TYPE" name="parameters[TYPE][]">
+					<option value="HOME">Home</option>
+<option value="WORK">Work</option>
+<option value="INTERNET">Internet</option>
+<option value="OTHER">Other</option>
+				</select>
+			</span>
+			<input type="url" class="nonempty value" name="value" value="{value}" placeholder="http://www.example.com/" required />
+			<span class="listactions">
+				<a role="button" class="icon-public action globe tooltipped leftwards" title="Go to web site">
+				<a role="button" class="icon-delete action delete tooltipped leftwards"></a>
+			</span>
+		</li>
+	</div>
+	<div class="adr" type="text/template">
+		<li data-element="adr" data-checksum="{checksum}" data-lang="en" class="propertycontainer">
+			<span class="parameters">
+				<input type="checkbox" id="adr_pref_{idx}" class="parameter tooltipped downwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="Preferred" />
+				<select class="type parameter" data-parameter="TYPE" name="parameters[TYPE][]">
+					<option value="HOME">Home</option>
+<option value="WORK">Work</option>
+<option value="OTHER">Other</option>
+				</select>
+			</span>
+			<span class="float display">
+				<span class="adr">{value}</span>
+			</span>
+			<span class="listactions">
+				<a class="icon-public action globe tooltipped leftwards" title="View on map"></a>
+				<a class="icon-delete action delete tooltipped leftwards"></a>
+			</span>
+			<fieldset class="adr hidden editor">
+				<ul>
+					<li><!-- Note to translators: The placeholders for address properties should be a well known address
+							so users can see where the data belongs according to https://tools.ietf.org/html/rfc2426#section-3.2.1 -->
+						<input class="value stradr tooltipped rightwards onfocus" type="text" id="adr_2" name="value[2]" value="{adr2}" 
+						placeholder="Street address" />
+					</li>
+					<li>
+						<input class="value zip tooltipped rightwards onfocus" type="text" id="adr_5" name="value[5]" value="{adr5}" 
+							placeholder="Postal code" />
+						<input class="value city tooltipped rightwards onfocus" type="text" id="adr_3" name="value[3]" value="{adr3}" 
+							placeholder="City" />
+					</li>
+					<li>
+						<input class="value region tooltipped rightwards onfocus" type="text" id="adr_4" name="value[4]" value="{adr4}" 
+							placeholder="State or province" />
+					</li>
+					<li>
+						<input class="value country tooltipped rightwards onfocus" type="text" id="adr_6" name="value[6]" value="{adr6}" 
+							placeholder="Country" />
+					</li>
+				</ul>
+				<input class="value pobox" type="hidden" id="adr_0" name="value[0]" value="{adr0}" />
+				<input class="value extadr" type="hidden" id="adr_1" name="value[1]" value="{adr1}" />
+			</fieldset>
+		</li>
+	</div>
+	<!--
+		<li data-element="adr" data-checksum="{checksum}" data-lang="en" class="propertycontainer">
+			<span class="parameters">
+				<input type="checkbox" id="adr_pref_{idx}" class="parameter tooltipped downwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="Preferred" />
+				<select class="type parameter" data-parameter="TYPE" name="parameters[TYPE][]">
+					<option value="HOME">Home</option>
+<option value="WORK">Work</option>
+<option value="OTHER">Other</option>
+				</select>
+			</span>
+	-->
+	
+	<div class="impp" type="text/template">
+		<li data-element="impp" data-checksum="{checksum}" class="propertycontainer">
+			<span class="parameters">
+				<input type="checkbox" id="impp_pref_{idx}" class="parameter tooltipped downwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="Preferred" />
+				<select class="rtl type parameter" data-parameter="X-SERVICE-TYPE" name="parameters[X-SERVICE-TYPE]">
+					<option value="jabber">Jabber</option>
+<option value="sip">Internet call</option>
+<option value="aim">AIM</option>
+<option value="msn">MSN</option>
+<option value="twitter">Twitter</option>
+<option value="googletalk">GoogleTalk</option>
+<option value="facebook">Facebook</option>
+<option value="xmpp">XMPP</option>
+<option value="icq">ICQ</option>
+<option value="yahoo">Yahoo</option>
+<option value="skype">Skype</option>
+<option value="qq">QQ</option>
+<option value="gadugadu">GaduGadu</option>
+<option value="owncloud-handle">ownCloud</option>
+				</select>
+			</span>
+			<input type="text" class="nonempty value" name="value" value="{value}"
+					placeholder="Instant Messenger" required />
+			<span class="listactions">
+				<a role="button" class="icon-delete action delete tooltipped leftwards"></a>
+			</span>
+		</li>
+	</div>
+	
+	
+	
+</script>
+
+<script id="addressBookTemplate" class="hidden" type="text/template">
+<li data-id="{id}" data-backend="{backend}" data-permissions="{permissions}">
+	<input type="checkbox" name="active" checked="checked" title="Active" />
+	<label>{displayname}</label>
+	<span class="actions">
+		<a title="Share" class="icon-share share action" data-possible-permissions="{permissions}" data-item="{id}" data-item-type="addressbook"></a>
+		<a title="Export" class="icon-download download action"></a>
+		<a title="CardDAV link" class="icon-public carddav action"></a>
+		<a title="Edit" class="icon-rename edit action"></a>
+		<a title="Delete" class="icon-delete delete action"></a>
+	</span>
+</li>
+</script>
+
+<script id="contactsImportTemplate" class="hidden" type="text/template">
+<div id="contacts-import-div" class="contacts-import-class">
+<p id="contacts-import-into-p">
+	<label for="contacts-import-into">Address book</label>
+	<select id="contacts-import-into">
+		<option value="-1">Import into...</option>
+	</select>
+</p>
+<p id="contacts-import-format-p">
+	<label for="contacts-import-into">Format</label>
+	<select id="contacts-import-format">
+		<option value="automatic">Automatic format</option>
+		<option value="csv_gmail">Gmail CSV</option><option value="csv_outlook">Outlook CSV</option><option value="csv_thunderbird">Thunderbird CSV</option><option value="csv_yahoo">Yahoo CSV</option><option value="ldif_phpldapadmin">PHPLdapAdmin ldif Export</option><option value="vcard_gmail">Gmail VCard</option><option value="vcard_standard">Standard VCard</option><option value="vcard_yahoo">Yahoo VCard</option>	</select>
+</p>
+<p id="contacts-import-upload" class="hidden">
+	<input id="contacts-import-upload-start" class="tooltipped" title="Select file..." type="file" name="file" disabled />
+</p>
+<p id="contacts-import-status">
+	<div class="import-status">
+		<label id="import-status-text"></label>
+		<div id="import-status-progress"></div>
+	</div>
+</p>
+</div>
+</script>
+
+<script id="addressBookConfigTemplate" class="hidden" type="text/template">
+<div id="addressbooks-ui-div" class="addressbooks-ui-class">
+	<input type="hidden" id="addressbooks-ui-addressbookid" />
+	<input type="hidden" id="addressbooks-ui-backend" value="{backend}" />
+	<p id="addressbooks-ui-name-p">
+	<label for="addressbooks-ui-name">
+	Name:
+	</label>
+	<input type="text" class="nonempty value" id="addressbooks-ui-name" value=""
+		placeholder="Name" required />
+	</p>
+	<p id="addressbooks-ui-uri-p">
+	<label for="addressbooks-ui-uri">
+	Addressbook URI:
+	</label>
+	<input type="text" class="nonempty value" id="addressbooks-ui-uri" value=""
+		placeholder="URI" required />
+	</p>
+	<p id="addressbooks-ui-description-p">
+	<label for="addressbooks-ui-description">
+	Description:
+	</label>
+	<input type="text" class="nonempty value" id="addressbooks-ui-description" value=""
+		placeholder="Description" />
+	</p>
+	<p id="addressbooks-ui-ldapurl-p">
+	<label for="addressbooks-ui-ldapurl">
+	LDAP URL:
+	</label>
+	<input type="text" class="nonempty value" id="addressbooks-ui-ldapurl" value=""
+		placeholder="LDAP URL" required />
+	</p>
+	<p id="addressbooks-ui-ldapanonymous-p">
+	<label for="addressbooks-ui-ldapanonymous">
+	Anonymous:
+	</label>
+	<input type="checkbox" id="addressbooks-ui-ldapanonymous" title="Anonymous" />
+	</p>
+	<p id="addressbooks-ui-ldapreadonly-p">
+	<label for="addressbooks-ui-ldapreadonly">
+	Read-only:
+	</label>
+	<input type="checkbox" id="addressbooks-ui-ldapreadonly" title="Read-Only" />
+	</p>
+	<p id="addressbooks-ui-ldapuser-p">
+	<label for="addressbooks-ui-ldapuser">
+	User:
+	</label>
+	<input type="text" class="nonempty value" id="addressbooks-ui-ldapuser" value=""
+		placeholder="User" required />
+	</p>
+	<p id="addressbooks-ui-ldappass-p">
+	<input type="hidden" id="addressbooks-ui-ldappass-modified" />
+	<label for="addressbooks-ui-ldappass">
+	Password:
+	</label>
+	<input type="password" class="nonempty value" id="addressbooks-ui-ldappass" value=""
+		placeholder="Password" required />
+	</p>
+	<p id="addressbooks-ui-ldappagesize-p">
+	<label for="addressbooks-ui-ldappagesize">
+	Page size:
+	</label>
+	<input type="text" class="nonempty value" id="addressbooks-ui-ldappagesize" value="20"
+		placeholder="Page size" required />
+	</p>
+	<p id="addressbooks-ui-ldapbasednsearch-p">
+	<label for="addressbooks-ui-ldapbasednsearch">
+	Base DN for search:
+	</label>
+	<input type="text" class="nonempty value" id="addressbooks-ui-ldapbasednsearch" value=""
+		placeholder="Base DN" required />
+	</p>
+	<p id="addressbooks-ui-ldapfilter-p">
+	<label for="addressbooks-ui-ldapfilter">
+	Search filter:
+	</label>
+	<input type="text" class="nonempty value" id="addressbooks-ui-ldapfilter" value=""
+		placeholder="Filter" required />
+	</p>
+	<p id="addressbooks-ui-ldapbasednmodify-p">
+	<label for="addressbooks-ui-ldapbasednmodify">
+	Base DN for modification:
+	</label>
+	<input type="text" class="nonempty value" id="addressbooks-ui-ldapbasednmodify" value=""
+		placeholder="Base DN modification" required />
+	</p>
+	<p id="addressbooks-ui-ldapvcardconnector-p">
+	<label for="addressbooks-ui-ldapvcardconnector">
+	Connector:
+	</label>
+	<select id="addressbooks-ui-ldapvcardconnector">
+	</select>
+	</p>
+	<p id="addressbooks-ui-ldapvcardconnector-value-p">
+	<label for="addressbooks-ui-ldapvcardconnector-value">
+	Connector value (Better use external editor and copy/paste):
+	</label>
+	<textarea id="addressbooks-ui-ldapvcardconnector-value"></textarea>
+	</p>
+	<p id="addressbooks-ui-ldapvcardconnector-copyfrom-p">
+	<label for="addressbooks-ui-ldapvcardconnector-copyfrom">
+	Copy from (Warning, replaces current custom value):
+	</label>
+	<select id="addressbooks-ui-ldapvcardconnector-copyfrom">
+	</select>
+	</p>
+	<p id="addressbooks-ui-errortitle-p">&nbsp;
+	</p>
+	<p id="addressbooks-ui-errormessage-p">&nbsp;
+	</p>
+</div>
+</script>
+
+			</div><!-- content -->
+		</div><!-- content-wrapper -->
+
+<div style="display: none;" id="cboxOverlay"></div><div style="display: none;" class="" id="colorbox"><div id="cboxWrapper"><div><div style="float: left;" id="cboxTopLeft"></div><div style="float: left;" id="cboxTopCenter"></div><div style="float: left;" id="cboxTopRight"></div></div><div style="clear: left;"><div style="float: left;" id="cboxMiddleLeft"></div><div style="float: left;" id="cboxContent"><div style="width: 0px; height: 0px; overflow: hidden; float: left;" id="cboxLoadedContent"></div><div style="float: left;" id="cboxTitle"></div><div style="float: left;" id="cboxCurrent"></div><div style="float: left;" id="cboxNext"></div><div style="float: left;" id="cboxPrevious"></div><div style="float: left;" id="cboxSlideshow"></div><div style="float: left;" id="cboxClose"></div></div><div style="float: left;" id="cboxMiddleRight"></div></div><div style="clear: left;"><div style="float: left;" id="cboxBottomLeft"></div><div style="float: left;" id="cboxBottomCenter"></div><div style="float: left;" id="cboxBottomRight"></div></div></div><div style="position: absolute; width: 9999px; visibility: hidden; display: none;"></div></div><div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>
+
+    </body>
+</html>
