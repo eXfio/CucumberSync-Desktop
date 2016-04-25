@@ -3,6 +3,14 @@
   "name": "CucumberSync",
   "version": "0.1",
   "minimum_chrome_version": "23",
+  "permissions":[
+    "storage",
+    "unlimitedStorage",
+    "https://api.accounts.firefox.com/",
+    "https://api.accounts.cucumbersync.com/",
+    "https://accounts.cucumbersync.com/",
+    "https://cucumbersync.com/"
+  ],
   "icons": {
     "16": "cucumbersync_16.png",
     "128": "cucumbersync_128.png"

@@ -27,6 +27,8 @@ OC.Contacts = OC.Contacts || {};
 		this.displayNames = {};
 		this.sortOrder = contacts_sortby || 'fn';
 		this.undoQueue = [];
+		//FIXME - Most vCard properties support multiple values (cardinality * or 1*)
+		//Update to comply with RFC6350.
 		this.multi_properties = ['EMAIL', 'TEL', 'IMPP', 'ADR', 'URL', 'CLOUD'];
 	};
 

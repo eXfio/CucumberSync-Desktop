@@ -1,0 +1,24 @@
+{
+  "name": "cucumbersync-desktop",
+  "version": "1.0.0-alpha.1",
+  "homepage": "https://github.com/eXfio/CucumberSync-Desktop",
+  "authors": [
+    "Gerry Healy <nickel_chrome@exfio.org>"
+  ],
+  "description": "CucumberSync client for Chrome",
+  "moduleType": [],
+  "license": "GPL-3.0",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "weaveclient-js": "https://github.com/nickel-chrome/weaveclient-js.git#master",
+    "ical.js": "~1.1.2",
+    "json.sortify": "~2.1.0"
+  }
+}

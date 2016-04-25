@@ -38,7 +38,7 @@
 	z-index: 2000;
 	height: 45px;
 	line-height: 2.5em;
-	background-color: #1d2d44;
+	background-color: #689F38;
 	box-sizing: border-box;
 }
 
@@ -80,16 +80,17 @@
 #header .logo-icon {
 	/* display logo so appname can be shown next to it */
 	display: inline-block;
-	background-image: url(../img/logo-icon.svg);
+	background-image: url(../../cucumbersync.svg);
+	background-size: contain;
 	background-repeat: no-repeat;
-	width: 62px;
+	width: 34px;
 	height: 34px;
 }
 
 #header .header-appname-container {
 	display: inline-block;
 	position: absolute;
-	left: 70px;
+	left: 45px;
 	height: 27px;
 	padding-top: 18px;
 	padding-right: 10px;

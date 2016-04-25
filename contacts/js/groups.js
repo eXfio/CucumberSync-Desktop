@@ -195,7 +195,7 @@ OC.Contacts = OC.Contacts || {};
 	GroupList.prototype.inGroup = function(contactid, groupid) {
 		var $groupelem = this.findById(groupid);
 		var contacts = $groupelem.data('contacts');
-		return (contacts.indexOf(contactid) !== -1);
+		return (contacts && contacts.indexOf(contactid) !== -1);
 	};
 
 	/**

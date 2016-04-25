@@ -127,14 +127,20 @@ $config = array(
 
 window.oc_debug = false;
 window.oc_isadmin = false;
-window.datepickerFormatDate = "jsdate";
+window.datepickerFormatDate = "yy-mm-dd";
 
 var oc_webroot;
 
 var oc_current_user = document.getElementsByTagName('head')[0].getAttribute('data-user');
 var oc_requesttoken = document.getElementsByTagName('head')[0].getAttribute('data-requesttoken');
 
-window.oc_config = window.oc_config || {};
+//window.oc_config = window.oc_config || {};
+window.oc_config = {
+  'session_keepalive': false,
+  'version': '0.1',
+  'versionstring': '0.1',
+  'enable_avatars': true
+};
 
 if (typeof oc_webroot === "undefined") {
 	oc_webroot = location.pathname;
@@ -1411,73 +1417,124 @@ OC.Breadcrumb={
 	}
 };
 
-//We know Chrome supports local storage using chrome.storage.local so this is always true
-if(true){
+/**
+ * User and instance aware localstorage
+ * @namespace
+ */
+OC.localStorage={
+    //We shouldn't need a namespace when running as a Chrome app
+    //namespace:'oc_'+OC.currentUser+'_'+OC.webroot+'_',
+    namespace:'',
+
 	/**
-	 * User and instance aware localstorage
-	 * @namespace
+	 * Whether the storage contains items
+	 * @param {string} name
+	 * @return {boolean}
 	 */
-	OC.localStorage={
-		namespace:'oc_'+OC.currentUser+'_'+OC.webroot+'_',
+	hasItem:function(name){
+		return OC.localStorage.getItem(name)!==null;
+	},
 
-		/**
-		 * Whether the storage contains items
-		 * @param {string} name
-		 * @return {boolean}
-		 */
-		hasItem:function(name){
-			return OC.localStorage.getItem(name)!==null;
-		},
+	/**
+	 * Add an item to the storage
+	 * @param {string} name
+	 * @param {string} item
+	 */
+	setItem:function(name,item){
+        var defer = $.Deferred();
+        
+        var key = OC.localStorage.namespace+name;
+        var storageItem = {};
+        storageItem[key] = item;
 
-		/**
-		 * Add an item to the storage
-		 * @param {string} name
-		 * @param {string} item
-		 */
-		setItem:function(name,item){
-			return chrome.storage.local.setItem(OC.localStorage.namespace+name,JSON.stringify(item));
-		},
+		chrome.storage.local.set(storageItem, function() {
+            if (chrome.runtime.lastError) {
+                var message = "Failed to save to local storage - " + chrome.runtime.lastError.message;
+                console.error(message);
+                defer.reject(message);
+            } else {
+                defer.resolve(true);
+                
+                /*
+                chrome.storage.local.get(key, function(items) {
+                    if (chrome.runtime.lastError) {
+                        console.error("Failed to retrieve '" + name + "' from local storage - " + chrome.runtime.lastError.message);
+                        return;
+                    }
+                    
+                    console.log("Successfully saved '" + name + "' to local storage with value: " + JSON.stringify(items));
+                
+                });
+                */
+            }
+        });
+        
+        return defer.promise();
+	},
+    
+	/**
+	 * Removes an item from the storage
+	 * @param {string} name
+	 * @param {string} item
+	 */
+	removeItem:function(name,item){
+        var key = OC.localStorage.namespace+name;
+		chrome.storage.local.remove(key);
+	},
+    
+	/**
+	 * Get an item from the storage
+	 * @param {string} name
+	 * @return {null|string}
+	 */
+	getItem:function(name){
+        var defer = $.Deferred();
 
-		/**
-		 * Removes an item from the storage
-		 * @param {string} name
-		 * @param {string} item
-		 */
-		removeItem:function(name,item){
-			return chrome.storage.local.removeItem(OC.localStorage.namespace+name);
-		},
+        var key = OC.localStorage.namespace+name;
 
-		/**
-		 * Get an item from the storage
-		 * @param {string} name
-		 * @return {null|string}
-		 */
-		getItem:function(name){
-			var item = chrome.storage.local.getItem(OC.localStorage.namespace+name);
-			if(item === null) {
-				return null;
-			} else if (typeof JSON === 'undefined') {
-				//fallback to jquery for IE6/7/8
-				return $.parseJSON(item);
-			} else {
-				return JSON.parse(item);
-			}
-		}
-	};
-}else{
-	//dummy localstorage
-	OC.localStorage={
-		hasItem:function(){
-			return false;
-		},
-		setItem:function(){
-			return false;
-		},
-		getItem:function(){
-			return null;
-		}
-	};
-}
+        chrome.storage.local.get(key, function(items) {
+            if (chrome.runtime.lastError) {
+                var message = "Failed to get '" + name + "' from local storage - " + chrome.runtime.lastError.message;
+                console.error(message);
+                defer.reject(message);
+            } else {
+                var item = null;
+		        if ( typeof items === 'object' && items.hasOwnProperty(key) ) {
+			        item = items[key];
+		        }
+                defer.resolve(item);
+            }
+        });
+
+        /*
+        //-------------------
+        //HACK - Simulate synchronous behaviour of HTML5 local storage. Timeout after 500ms
+        var cbflag = false;
+        var cbtimeout = false;
+        var cbtimer = setTimeout(function() {cbtimeout = true}, 500);
+        while (! (cbflag || cbtimeout) ) {
+            //Arbitrary async IO call
+            chrome.storage.local.set({cbwait: 1});
+        }
+        clearTimeout(cbtimer);
+        if (cbtimeout) {
+            throw new Error("Timeout waiting for local storage");
+        }
+        //-------------------
+        
+        return item;
+        */
+
+        return defer.promise();
+	},
+
+	/**
+	 * Clear the storage
+	 */
+	clear:function(){
+		chrome.storage.local.clear();
+	}
+};
 
 /**
  * check if the browser support svg images

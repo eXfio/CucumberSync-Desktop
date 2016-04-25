@@ -55,25 +55,92 @@ OC.Contacts = OC.Contacts || {};
 	*/
 	var Storage = function(user) {
 		this.user = user ? user : OC.currentUser;
-	};
+        this.weaveClient = null;
+        this.keyPair =null;
 
+        //reset local storage
+        OC.localStorage.clear();
+        
+        weave.util.Log.setLevel("debug");
+    };
+
+	Storage.prototype.initWeaveClient = function() {
+        weave.util.Log.debug("Storage.initWeaveClient()");
+        
+        var self = this;
+        
+        var defer = $.Deferred();
+        
+        if ( this.weaveClient !== null ) {
+            defer.resolve(true);
+        } else {
+
+            //FIXME - make weave params configurable
+            
+            var weaveParams = {
+                accountServer: 'DEV ACCOUNT SERVER',
+                tokenServer: 'DEV TOKEN SERVER',
+                user: 'DEV USERNAME',
+                password: 'DEV PASSWORD'
+            };
+
+            weave.util.Log.debug("Call weave.account.fxa.FxAccount.init() with params: " + JSON.stringify(weaveParams));
+            var weaveAccount = new weave.account.fxa.FxAccount();
+            weaveAccount.init(weaveParams)
+                .then(function() {
+                    //get WeaveClient instance
+                    try {
+                        self.weaveClient = weave.client.WeaveClientFactory.getInstance(weaveAccount);
+                        //defer.resolve(true);
+                    } catch(e) {
+                        defer.reject({error: true, message: e.message});
+                        return;
+                    }
+
+                    
+                    //generate ephemeral keyPair to encrypt localStorage
+                    var ikm  = forge.util.createBuffer(forge.random.getBytesSync(32));
+                    var info = forge.util.createBuffer("accounts.cucumberysync.com");
+                    var salt = forge.util.createBuffer();
+
+                    weave.crypto.HKDF.derive(ikm, info, salt, 2*32)
+                        .then(
+                            function(derived) {
+                                self.keyPair = {
+	                                cryptKey: forge.util.createBuffer(derived.getBytes(32)),
+	                                hmacKey:  forge.util.createBuffer(derived.getBytes())
+                                };
+	                            
+	                            weave.util.Log.info("Successfully generated key pair");
+	                            weave.util.Log.debug("ikm: " + ikm.toHex() + ", crypt key: " + self.keyPair.cryptKey.toHex() + ", hmac key: " + self.keyPair.hmacKey.toHex());
+                                
+                                defer.resolve(true);
+                            },
+                            function(error) {
+                                var message = (error instanceof Object && error.message ? error.message : error);
+                                weave.util.Log.error("Couldn't generate key pair - " + message);
+                                
+                                defer.reject({error: true, message: message});
+                            }
+                        );
+                })
+                .fail(function(error) {
+                    var message = (error instanceof Object && error.message ? error.message : error);
+                    console.error("Couldn't instantiate WeaveClient - " + message);
+                    defer.reject({error: true, message: message});
+                });
+            
+	    };
+
+        return defer.promise();
+    }
+    
 	/**
 	 * Test if localStorage is working
 	 *
 	 * @return bool
 	 */
 	Storage.prototype.hasLocalStorage = function() {
-		if (Modernizr && !Modernizr.localStorage) {
-			return false;
-		}
-		// Some browsers report support but doesn't have it
-		// e.g. Safari in private browsing mode.
-		try {
-			OC.localStorage.setItem('Hello', 'World');
-			OC.localStorage.removeItem('Hello');
-		} catch (e) {
-			return false;
-		}
 		return true;
 	};
 
@@ -111,16 +178,18 @@ OC.Contacts = OC.Contacts || {};
 						backend: 'local',
 						id: 1,
 						permissions: 31,
-						displayname: 'Contacts'
+						displayname: 'Contacts',
+                        active: true
 					}
 				]
 			}
 		};
 
-		var defer = $.Deferred();
-		defer.resolve(response);
-		return defer.promise();
-		
+		//var defer = $.Deferred();
+		//defer.resolve(response);
+		//return defer.promise();
+        return $.when(response);
+        
 		/*
 		return this.requestRoute(
 			'addressbooks/',
@@ -303,45 +372,201 @@ OC.Contacts = OC.Contacts || {};
 	 * }
 	 */
 	Storage.prototype.getContacts = function(backend, addressBookId) {
-		var self = this,
-			headers = {},
-			data,
-			key = 'contacts::' + backend + '::' + addressBookId,
-			defer = $.Deferred();
+        weave.util.Log.debug("Storage.getContacts()");
+        
+		var self = this;
+		var headers = {};
+	    var data = null;
+		var defer = $.Deferred();
 
-		if(this.hasLocalStorage() && OC.localStorage.hasItem(key)) {
-			data = OC.localStorage.getItem(key);
-			headers['If-None-Match'] = data.Etag;
-		}
-		$.when(this.requestRoute(
-			'addressbook/{backend}/{addressBookId}/contacts',
-			'GET',
-			{backend: backend, addressBookId: addressBookId},
-			'',
-			headers
-		))
-		.then(function(response) {
-			console.log('response', response);
-			if(response.statusCode === 200) {
-				console.log('Returning fetched address book');
-				if(response.data) {
-					response.data.Etag = response.getResponseHeader('Etag');
-					if (!self.hasLocalStorage()) {
-						OC.localStorage.setItem(key, response.data);
-					}
-					defer.resolve(response);
-				}
-			} else if(response.statusCode === 304) {
-				console.log('Returning stored address book');
-				response.data = data;
-				defer.resolve(response);
-			}
-		})
-		.fail(function(response) {
-			console.warn('Request Failed:', response.message);
-			defer.reject(response);
-		});
-		return defer;
+        var modifiedLocal  = null;
+        var modifiedRemote = null;
+        
+		var keyModified = 'contacts::' + backend + '::' + addressBookId + '::modified';
+		//if(this.hasLocalStorage() && OC.localStorage.hasItem(keyModified)) {
+		//	modifiedLocal = OC.localStorage.getItem(keyModified);
+		//}
+
+		OC.localStorage.getItem(keyModified)
+            .then(function(modified) {
+                if (modified) {
+                    modifiedLocal = modified;
+                }
+                return $.Deferred().resolve(true);
+            })
+            .then(function() {
+                return self.initWeaveClient();
+            })
+            .then(function() {                
+                var wcDefer = $.Deferred();
+                self.weaveClient.getCollectionInfo('exfiocontacts')
+                    .then(function(colinfo) {
+                        wcDefer.resolve(colinfo);
+                    })
+                    .fail(function(error) {
+                        wcDefer.reject(error);
+                    });
+                return wcDefer.promise();
+            })
+            .then(function(colinfo) {
+                var wcDefer = $.Deferred();
+                
+                //FIXME - support If-Modified-Since header to prevent unecessary sending of data
+                modifiedRemote = colinfo.modified;
+                
+                self.weaveClient.getCollection('exfiocontacts', null, null, null, null, null, null, null, null, null, true, true)
+                    .then(function(wbos) {
+                        weave.util.Log.debug("wbos 1: " + JSON.stringify(wbos));
+                        wcDefer.resolve(wbos);
+                    })
+                    .fail(function(error) {
+                        wcDefer.reject(error);
+                    });
+                return wcDefer.promise();
+            })
+            .then(function(wbos) {
+                weave.util.Log.debug("wbos 2: " + JSON.stringify(wbos));
+                if ( Object.prototype.toString.call(wbos) !== '[object Array]' ) {
+                    defer.reject({error:true, message: "Weave Sync payload invalid"});
+                    return;
+                }
+
+                var promiseStorageContacts = [];
+                var ocContacts = [];            
+                for (var i = 0; i < wbos.length; i++) {
+                    var wbo = wbos[i];
+
+                    //cache encyrpted copy of wbo to support 'patching' of subset of properties
+                    var encWbo = new weave.storage.WeaveBasicObject();
+                    encWbo.fromJSONObject(wbo.toJSONObject());
+                    encWbo.payload = weave.crypto.PayloadCipher.encrypt(encWbo.payload, self.keyPair);
+		            var keyContact = 'contacts::' + backend + '::' + addressBookId + '::contact::' + encWbo.id;
+			        promiseStorageContacts.push(OC.localStorage.setItem(keyContact, encWbo));
+                    
+                    var contact = {
+                        metadata: {
+                            id: wbo.id,
+                            permissions: 31, //TODO - confirm meaning of default
+                            displayname: "", //get FN from vcard props
+                            lastmodified: Math.floor(wbo.modified),
+                            owner: "foo", //FIXME - confirm default
+                            backend: backend,
+                            parent: addressBookId,
+                        },
+                        data: {}
+                    };
+                    
+                    var jcardData = JSON.parse(wbo.payload);
+                    if ( 
+                        !(
+                            Object.prototype.toString.call(jcardData) === '[object Array]'
+                                && jcardData[0].toLowerCase() === 'vcard' 
+                                && Object.prototype.toString.call(jcardData[1]) === '[object Array]'
+                        ) 
+                    ) {
+                        console.warn("Weave Sync payload invalid");
+                        continue;
+                    }
+
+                    //var jcardProps = jcardData[1];
+                    //for (var j = 0; j < jcardProps.length; j++) {
+                    //    var prop = jcardProps[j];
+                    //    var propName = prop[0].toUpperCase();
+                    //    var jcardProp = new ICAL.Property(prop);
+
+                    var jcardComponent = new ICAL.Component(jcardData);
+                    var jcardProps = jcardComponent.getAllProperties();
+                    for (var j = 0; j < jcardProps.length; j++) {
+                        var jcardProp = jcardProps[j];
+                        var propName = jcardProp.name.toUpperCase();
+                        var prop = jcardProp.toJSON();
+                        
+                        console.debug("jcard prop: " + JSON.stringify(jcardProp.toJSON()));
+                        var propChecksum = md5(JSON.sortify(jcardProp.toJSON()));
+
+                        //Normalise parameters
+                        var propParameters = {};
+                        for (var key in prop[1]) {
+                            var val = prop[1][key];
+
+                            //Make type value an array
+                            if ( key.toLowerCase() === 'type' && !(val instanceof Array) ) {
+                                val = [val];
+                            }
+                            
+                            //Transform parameter keys and values to lower case
+                            if ( val instanceof String ) {
+                                val = val.toLowerCase();
+                            } else if ( val instanceof Array ) {
+                                var tmpval = val.map(function(item) { return item.toLowerCase() });
+                                val = tmpval;
+                            }
+                            propParameters[key.toLowerCase()] = val;
+                        }
+
+                        if ( propName == 'FN' ) {
+                            contact.metadata.displayname = prop[3];
+                        }
+
+                        switch(propName) {
+                            
+                        case 'CLIENTPIDMAP':
+                        case 'GENDER':
+                        case 'ORG':
+                            //FIXME - implement structured
+                            break;
+                        case 'NICKNAME':
+                            //FIXME - implement multivalue
+                            break;
+                        case 'ADR':
+                        case 'N':
+                            //FIXME - implement structured multivalue
+                            break;
+                        default:                            
+                            if ( !(propName in contact.data) ) {
+                                contact.data[propName] = [];
+                            }
+                            contact.data[propName].push({
+                                value: prop[3],
+                                parameters: propParameters,
+                                checksum: propChecksum
+                            });
+                            //contact.data[propName].push({
+                            //    value: jcardProp.getFirstValue(),
+                            //    parameters: jcardProp.getParameters(),
+                            //    checksum: propChecksum
+                            //});
+                            break;
+                        }
+                    }
+                    
+                    ocContacts.push(contact);
+                }
+
+                //chrome.storage.local.get(null, function(items) {
+                //    console.debug("local storage: " + JSON.stringify(items));
+                //});
+                
+                //FIXME - populate with valid ETag and statusCode values
+                var status = 200;
+                var etag = "foo";
+                
+                var response = {data: {error: false, statusCode: status, Etag: etag, contacts: ocContacts}};
+
+                $.when.apply($, promiseStorageContacts)
+                    .then(
+			            OC.localStorage.setItem(keyModified, modifiedRemote)
+                    )                
+                    .then(function() {
+                        defer.resolve(response);
+                    });
+		    })
+		    .fail(function(response) {
+			    console.warn('Request Failed:', response.message);
+			    defer.reject(response);
+		    });
+        
+	    return defer.promise();
 	};
 
 	/**
@@ -364,11 +589,28 @@ OC.Contacts = OC.Contacts || {};
 	 */
 	Storage.prototype.addContact = function(backend, addressBookId) {
 		console.log('Storage.addContact', backend, addressBookId);
+        //return skeleton contact with uid only
+        var uid = "foobar";
+        var contact = {
+            metadata: {
+                id: uid,
+                permissions: 31, //TODO - confirm meaning of default
+                displayname: "", //get FN from vcard props
+                lastmodified: null,
+                owner: "foo", //FIXME - confirm default
+                parent: "exfiocontacts", //FIXME - confirm default
+            },
+            data: {}
+        };
+        return $.when(contact);
+        
+        /*
 		return this.requestRoute(
 			'addressbook/{backend}/{addressBookId}/contact/add',
 			'POST',
 			{backend: backend, addressBookId: addressBookId}
 		);
+        */
 	};
 
 	/**
@@ -529,12 +771,150 @@ OC.Contacts = OC.Contacts || {};
 	 *               an 8 character md5 checksum of the serialized \Sabre\Property
 	 */
 	Storage.prototype.patchContact = function(backend, addressBookId, contactId, params) {
+		console.log('Storage.patchContact', params);
+
+        var self = this;
+        
+        //patch local contact then update remote collection
+
+        var oldchecksum = ((params && typeof params.checksum !== 'undefined') ? params.checksum : null);
+        
+        var response = {
+            data: {
+                lastmodified: null
+            }
+        };
+        
+        var keyContact = 'contacts::' + backend + '::' + addressBookId + '::contact::' + contactId;
+        
+        //1. load contact from local storage
+		return OC.localStorage.getItem(keyContact)
+            .then(function(wboJson) {
+                if (wboJson === null) {
+                    return $.Deferred().reject("Contact id '" + contactId + "'not found in local storage");
+                }
+                var wbo = new weave.storage.WeaveBasicObject();
+                wbo.fromJSONObject(wboJson);
+                wbo.payload = weave.crypto.PayloadCipher.decrypt(wbo.payload, self.keyPair);
+                return $.when(wbo);
+            })
+            .then(function(wbo) {
+                //2. apply change
+                
+                console.debug("jcard in: " + wbo.payload);
+                var jcardObject = JSON.parse(wbo.payload);
+                var jcardComponent = new ICAL.Component(jcardObject);
+
+                //TODO - check for cardinality * and 1* here
+                //var jcardProp = jcardComponent.getFirstProperty(params.name.toLowerCase());
+                var jcardProp = null;
+                var jcardProps = jcardComponent.getAllProperties(params.name.toLowerCase());
+
+
+                //first remove old property
+                if ( 'checksum' in params && params.checksum === 'new' ) {
+                    //new property, nothing to do
+                } else {
+                    if ( jcardProps.length == 1 ) {
+                        jcardProp = jcardProps[0];
+                    } else if ( jcardProps.length > 1 && 'checksum' in params ) {
+                        for (var i = 0; i < jcardProps.length; i++) {
+                            var propChecksum = md5(JSON.sortify(jcardProps[i].toJSON()));
+                            if ( params.checksum == propChecksum ) {
+                                jcardProp = jcardProps[i];
+                                break;
+                            }
+                        }
+                    }
+
+                    if ( jcardProp === null ) {
+                        throw new Error("Couldn't find property to patch");
+                    }
+
+                    console.debug("jcard prop in: '" + jcardProp.name + "':" + JSON.stringify(jcardProp.toJSON()));
+
+                    jcardComponent.removeProperty(jcardProp);
+                }
+
+                jcardProp = new ICAL.Property(params.name.toLowerCase());
+                
+                if (typeof params.value === 'array') {
+                    //TODO - check if property type is multi-value
+                    jcardProp.setValues(params.value);
+                } else {
+                    jcardProp.setValue(params.value);  
+                }
+                
+                if ( 'parameters' in params ) {
+                    for (var key in params.parameters) {
+                        //jcardProp.setParameter(key, params.parameters[key]);
+                        //transform parameter keys and values to lower case
+                        var val = params.parameters[key];
+                        if ( val instanceof Array ) {
+                            var tmpval = val.map(function(item) { return item.toLowerCase() });
+                            val = tmpval;
+                        }
+                        jcardProp.setParameter(key.toLowerCase(), val);
+                    }
+                }
+
+                //patch jcal property
+                jcardComponent.addProperty(jcardProp);                
+
+                console.debug("jcard prop out: '" + jcardProp.name + "':" + JSON.stringify(jcardProp.toJSON()));
+                console.debug("jcard out: " + JSON.stringify(jcardComponent.toJSON()));
+
+                if ( oldchecksum ) {
+                    response.data.checksum = md5(JSON.sortify(jcardProp.toJSON()));
+                }
+                
+                //Update wbo
+                wbo.payload = JSON.stringify(jcardComponent.toJSON());
+
+                return $.when(wbo);
+
+                //response.data.lastmodified = wbo.modified;
+                //if ( oldchecksum ) {
+                //    response.data.checksum = oldchecksum;
+                //}
+                //return $.when(response);
+            })
+            .then(function(wbo) {
+                //3. update remote collection        
+                var defer = $.Deferred();
+                
+                self.weaveClient.put('exfiocontacts', contactId, wbo)
+                    .then(function(modified) {
+                        wbo.modified = modified;
+                        defer.resolve(wbo);
+                    })
+                    .fail(function(error) {
+                        defer.reject(error);
+                    });
+
+                return defer.promise();
+            })
+            .then(function(wbo) {
+                //3. update local storage
+                wbo.payload = weave.crypto.PayloadCipher.encrypt(wbo.payload, self.keyPair);
+                return OC.localStorage.setItem(keyContact, wbo)
+                    .then(function() {
+                        response.data.lastmodified = wbo.modified;
+                        return $.when(response);
+                    });
+            })
+            .fail(function(error) {
+                console.error("Couldn't patch contact - " + error);
+            });
+        
+        /*
 		return this.requestRoute(
 			'addressbook/{backend}/{addressBookId}/contact/{contactId}',
 			'PATCH',
 			{backend: backend, addressBookId: addressBookId, contactId: contactId},
 			JSON.stringify(params)
 		);
+        */
 	};
 
 	/**
@@ -683,13 +1063,17 @@ OC.Contacts = OC.Contacts || {};
 	 * @param string key
 	 * @param string value
 	 */
-	Storage.prototype.setPreference = function(key, value) {
+    Storage.prototype.setPreference = function(key, value) {
+        //FIXME - save using local storage
+        return $.when({});
+        /*
 		return this.requestRoute(
 			'preference/set',
 			'POST',
 			{},
 			JSON.stringify({key: key, value:value})
 		);
+        */
 	};
 
 	Storage.prototype.prepareImport = function(backend, addressBookId, importType, params) {

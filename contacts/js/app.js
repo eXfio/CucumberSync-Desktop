@@ -161,6 +161,8 @@ OC.notify = function(params) {
 
 	OC.Contacts = OC.Contacts || {
 		init:function() {
+            console.debug("OC.Contacts.init()");
+            
 			if(oc_debug === true) {
 				$.error = console.error;
 			}

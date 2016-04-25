@@ -108,6 +108,7 @@
 					<script src="index-core_files/combobox.js"></script>
 -->
 
+					<!-- core css -->
 					<link rel="stylesheet" href="core/css/global.css" media="screen">
 					<link rel="stylesheet" href="core/css/styles.css" media="screen">
 					<link rel="stylesheet" href="core/css/header.css" media="screen">
@@ -121,10 +122,16 @@
 					<link rel="stylesheet" href="core/bower_components/jquery-ui/themes/base/jquery-ui.css" media="screen">
 					<link rel="stylesheet" href="core/css/jquery-ui-fixes.css" media="screen">
 					<link rel="stylesheet" href="core/css/tooltip.css" media="screen">
-					<link rel="stylesheet" href="contacts/css/share.css" media="screen">
-					<link rel="stylesheet" href="contacts/css/multi-select.css" media="screen">
-					<link rel="stylesheet" href="contacts/css/contacts.css" media="screen">
 
+                    <!-- app javascript modules -->
+					<script src="components/fxa-js-client/build/fxa-client.js"></script>
+					<script src="components/forge/js/forge.bundle.js"></script>
+					<script src="components/browserid-crypto/bidbundle.js"></script>
+					<script src="components/weaveclient-js/weaveclient-bundle.js"></script>
+					<script src="components/ical.js/build/ical.js"></script>
+					<script src="components/json.sortify/dist/JSON.sortify.js"></script>
+                    
+                    <!-- core javascript modules -->
 					<script src="core/bower_components/jquery/jquery.js"></script>
 					<script src="core/bower_components/jquery-ui/ui/jquery-ui.custom.js"></script>
 					<script src="core/bower_components/underscore/underscore.js"></script>
@@ -138,7 +145,15 @@
 					<script src="core/js/l10n.js"></script>
 					<script src="core/js/octemplate.js"></script>
 					<script src="core/js/share.js"></script>
-					<script src="contacts/bower_components/ui-multiselect/src/jquery.multiselect.js"></script>
+
+                    <!-- contacts css -->
+					<link rel="stylesheet" href="contacts/css/share.css" media="screen">
+					<link rel="stylesheet" href="contacts/css/multi-select.css" media="screen">
+					<link rel="stylesheet" href="contacts/css/contacts.css" media="screen">
+					<link rel="stylesheet" href="contacts/css/jquery.ocaddnew.css" media="screen">
+
+                    <!-- contacts javascript modules -->
+                    <script src="contacts/bower_components/ui-multiselect/src/jquery.multiselect.js"></script>
 					<script src="contacts/bower_components/blueimp-md5/js/md5.min.js"></script>
 					<script src="contacts/bower_components/jcrop/js/jquery.Jcrop.min.js"></script>
 					<script src="contacts/bower_components/blueimp-file-upload/js/jquery.fileupload.js"></script>
@@ -289,7 +304,7 @@
 				  New contact				</a>
 			</li>
 			<li class="special">
-				<ul aria-disabled="false" style="display: inline-block; width: auto; height: auto;" class="oc-addnew"><li><a class="oc-addnew-init">New group</a></li><li><input style="display: none;" class="add-group hidden oc-addnew-name" tabindex="0" autofocus="" placeholder="Group name" title="New group" type="text"><button style="display: none;" class="new-button primary icon-checkmark-white"></button></li></ul>
+				<input style="display: none;" class="add-group hidden oc-addnew-name" tabindex="0" autofocus="" placeholder="Group name" title="New group" type="text">
 			</li>
 		<li class="group active" data-type="all" data-id="all">
 		<a class="name" title="All" role="button">All</a>
@@ -375,6 +390,7 @@
 				</tr>
 			</thead>
 			<tbody>
+            <!--
 			<tr style="display: table-row;" class="contact" data-id="1" data-parent="1" data-backend="local">
 		<td class="name thumbnail ui-draggable">
 			<input id="select-1" name="id" value="1" type="checkbox">
@@ -389,7 +405,9 @@
 		<td class="tel"></td>
 		<td class="adr"></td>
 		<td class="categories"></td>
-	</tr></tbody>
+	        </tr>
+            -->
+            </tbody>
 		</table>
 		<div class="hidden popup" id="ninjahelp">
 			<a class="close" tabindex="0" role="button" title="Close"></a>
