@@ -30,7 +30,7 @@
 #contact .parameter {
 	float: right !important;
 }
-#contact input[type="button"]:hover, #contact select:hover, #contact select:focus, #contact select:active, #contact input[type="button"]:focus, #contact .button:hover, button:hover { background-color:#fff; color:#333; }
+#contact input[type="button"]:hover, #contact select:hover, #contact select:focus, #contact select:active, #contact input[type="button"]:focus, #contact .button:hover, button:hover { cursor: pointer; color:#333; }
 
 #contact fieldset, #contact div, #contact span, #contact section {
 	-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
@@ -892,4 +892,16 @@ tbody tr.contact.active, tbody tr.contact:hover {
 	#contactlist tr { width: 100%; }
 	#contactsHeader tr td.email { display: none; }
 	#contactsHeader tr td.cloud { display: none; }
+}
+
+/* CucumberSync overrides */
+
+/* Currently one addressbook supported so hide addressbook settings */
+#app-settings-content #addressbooks {
+    display: none;
+}
+
+/* Currently groups not supported so hide group actions */
+#grouplist li:not(:first-child) {
+    display: none;
 }

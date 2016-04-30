@@ -129,8 +129,6 @@ window.oc_debug = false;
 window.oc_isadmin = false;
 window.datepickerFormatDate = "yy-mm-dd";
 
-var oc_webroot;
-
 var oc_current_user = document.getElementsByTagName('head')[0].getAttribute('data-user');
 var oc_requesttoken = document.getElementsByTagName('head')[0].getAttribute('data-requesttoken');
 
@@ -142,6 +140,11 @@ window.oc_config = {
   'enable_avatars': true
 };
 
+var oc_webroot = '';
+var oc_appswebroots = {
+    'contacts': ''
+};
+/*
 if (typeof oc_webroot === "undefined") {
 	oc_webroot = location.pathname;
 	var pos = oc_webroot.indexOf('/index.php/');
@@ -152,6 +155,8 @@ if (typeof oc_webroot === "undefined") {
 		oc_webroot = oc_webroot.substr(0, oc_webroot.lastIndexOf('/'));
 	}
 }
+*/
+
 /*
 if (
 	oc_debug !== true || typeof console === "undefined" ||
@@ -321,7 +326,8 @@ var OC={
 		var isCore=OC.coreApps.indexOf(app)!==-1,
 			link=OC.webroot;
 		if(file.substring(file.length-3) === 'php' && !isCore){
-			link+='/index.php/apps/' + app;
+			//link+='/index.php/apps/' + app;
+			link+= '/' + app;
 			if (file != 'index.php') {
 				link+='/';
 				if(type){
@@ -339,12 +345,15 @@ var OC={
 			}
 			link+=file;
 		}else{
+			/*
 			if ((app == 'settings' || app == 'core' || app == 'search') && type == 'ajax') {
 				link+='/index.php/';
 			}
 			else {
 				link+='/';
 			}
+			*/
+			link+='/';
 			if(!isCore){
 				link+='apps/';
 			}
@@ -1454,18 +1463,6 @@ OC.localStorage={
                 defer.reject(message);
             } else {
                 defer.resolve(true);
-                
-                /*
-                chrome.storage.local.get(key, function(items) {
-                    if (chrome.runtime.lastError) {
-                        console.error("Failed to retrieve '" + name + "' from local storage - " + chrome.runtime.lastError.message);
-                        return;
-                    }
-                    
-                    console.log("Successfully saved '" + name + "' to local storage with value: " + JSON.stringify(items));
-                
-                });
-                */
             }
         });
         
@@ -1505,26 +1502,7 @@ OC.localStorage={
                 defer.resolve(item);
             }
         });
-
-        /*
-        //-------------------
-        //HACK - Simulate synchronous behaviour of HTML5 local storage. Timeout after 500ms
-        var cbflag = false;
-        var cbtimeout = false;
-        var cbtimer = setTimeout(function() {cbtimeout = true}, 500);
-        while (! (cbflag || cbtimeout) ) {
-            //Arbitrary async IO call
-            chrome.storage.local.set({cbwait: 1});
-        }
-        clearTimeout(cbtimer);
-        if (cbtimeout) {
-            throw new Error("Timeout waiting for local storage");
-        }
-        //-------------------
         
-        return item;
-        */
-
         return defer.promise();
 	},
 
@@ -1532,7 +1510,18 @@ OC.localStorage={
 	 * Clear the storage
 	 */
 	clear:function(){
-		chrome.storage.local.clear();
+        var defer = $.Deferred();
+        chrome.storage.local.clear(function() {
+            if (chrome.runtime.lastError) {
+                var message = "Failed to clear local storage - " + chrome.runtime.lastError.message;
+                console.error(message);
+                defer.reject(message);
+            } else {
+                defer.resolve(true);
+            }
+        });
+        
+        return defer.promise();
 	}
 };
 

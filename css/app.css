@@ -1,0 +1,11 @@
+div.account-signin > p > label {
+	vertical-align: baseline;
+	width:100px;
+	display: inline-block;
+}
+
+div.account-signin > p > select,
+div.account-signin > p > input {
+	width:200px;
+	display: inline-block;
+}

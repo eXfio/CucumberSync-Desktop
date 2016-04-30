@@ -43,7 +43,7 @@
 					<link rel="stylesheet" href="index-core_files/contacts.css" media="screen">
 					<link rel="stylesheet" href="index-core_files/jquery_003.css" media="screen">
 					<link rel="stylesheet" href="index-core_files/jquery_002.css" media="screen">
-							<script src="index-core_files/oc.js"></script>
+					<script src="index-core_files/oc.js"></script>
 					<script src="index-core_files/jquery_008.js"></script>
 					<script src="index-core_files/jquery-migrate.js"></script>
 					<script src="index-core_files/jquery-ui.js"></script>
@@ -108,6 +108,9 @@
 					<script src="index-core_files/combobox.js"></script>
 -->
 
+					<!-- app css -->
+					<link rel="stylesheet" href="css/app.css" media="screen">
+
 					<!-- core css -->
 					<link rel="stylesheet" href="core/css/global.css" media="screen">
 					<link rel="stylesheet" href="core/css/styles.css" media="screen">
@@ -122,22 +125,30 @@
 					<link rel="stylesheet" href="core/bower_components/jquery-ui/themes/base/jquery-ui.css" media="screen">
 					<link rel="stylesheet" href="core/css/jquery-ui-fixes.css" media="screen">
 					<link rel="stylesheet" href="core/css/tooltip.css" media="screen">
+					<link rel="stylesheet" href="core/css/jquery.ocdialog.css" media="screen">
 
-                    <!-- app javascript modules -->
+                    <!-- app javascript module deps -->
 					<script src="components/fxa-js-client/build/fxa-client.js"></script>
 					<script src="components/forge/js/forge.bundle.js"></script>
 					<script src="components/browserid-crypto/bidbundle.js"></script>
 					<script src="components/weaveclient-js/weaveclient-bundle.js"></script>
 					<script src="components/ical.js/build/ical.js"></script>
 					<script src="components/json.sortify/dist/JSON.sortify.js"></script>
+                    <script src="components/node-uuid/uuid.js"></script>
+					<script src="components/jquery/dist/jquery.js"></script>
                     
-                    <!-- core javascript modules -->
-					<script src="core/bower_components/jquery/jquery.js"></script>
+                    <!-- app javascript -->
+                    <script src="js/account.js"></script>
+                    
+                    <!-- core javascript module deps -->
+					<!--<script src="core/bower_components/jquery/jquery.js"></script>-->
 					<script src="core/bower_components/jquery-ui/ui/jquery-ui.custom.js"></script>
 					<script src="core/bower_components/underscore/underscore.js"></script>
 					<script src="core/bower_components/moment/min/moment-with-locales.js"></script>
 					<script src="core/bower_components/handlebars/handlebars.js"></script>
 					<script src="core/bower_components/snapjs/dist/latest/snap.js"></script>
+                    
+                    <!-- core javascript -->
 					<script src="core/js/oc-dialogs.js"></script>
 					<script src="core/js/js.js"></script>
 					<script src="core/js/tags.js"></script>
@@ -145,6 +156,7 @@
 					<script src="core/js/l10n.js"></script>
 					<script src="core/js/octemplate.js"></script>
 					<script src="core/js/share.js"></script>
+					<script src="core/js/jquery.ocdialog.js"></script>
 
                     <!-- contacts css -->
 					<link rel="stylesheet" href="contacts/css/share.css" media="screen">
@@ -152,12 +164,14 @@
 					<link rel="stylesheet" href="contacts/css/contacts.css" media="screen">
 					<link rel="stylesheet" href="contacts/css/jquery.ocaddnew.css" media="screen">
 
-                    <!-- contacts javascript modules -->
+                    <!-- contacts javascript module deps -->
                     <script src="contacts/bower_components/ui-multiselect/src/jquery.multiselect.js"></script>
 					<script src="contacts/bower_components/blueimp-md5/js/md5.min.js"></script>
 					<script src="contacts/bower_components/jcrop/js/jquery.Jcrop.min.js"></script>
 					<script src="contacts/bower_components/blueimp-file-upload/js/jquery.fileupload.js"></script>
 					<script src="contacts/bower_components/combobox.js"></script>
+                    
+                    <!-- contacts javascript -->
 					<script src="contacts/js/share.js"></script>
 					<script src="contacts/js/modernizr.custom.js"></script>
 					<script src="contacts/js/app.js"></script>
@@ -190,37 +204,33 @@
 			<div id="logo-claim" style="display:none;"></div>
 			<div id="settings" class="svg">
 				<div id="expand" tabindex="6" role="link" class="menutoggle">
-										<div class="avatardiv" style="display: none">
-											</div>
-										<span id="expandDisplayName">admin</span>
+										<div class="avatardiv"></div>
+										<span id="expandDisplayName"></span>
 					<img class="svg" alt="" src="core/img/actions/caret.svg">
 				</div>
 				<div class="menu" id="expanddiv">
 				<ul>
+				    <!--
 									<li>
-						<a href="https://cucumbersync.com/portal/index.php/settings/personal">
-							<img class="svg" alt="" src="settings/img/personal.svg">
-							Personal						</a>
-					</li>
-									<li>
-						<a href="https://cucumbersync.com/portal/index.php/settings/users">
-							<img class="svg" alt="" src="settings/img/users.svg">
-							Users						</a>
-					</li>
-									<li>
-						<a href="https://cucumbersync.com/portal/index.php/settings/admin">
-							<img class="svg" alt="" src="settings/img/admin.svg">
-							Admin						</a>
-					</li>
-									<li>
-						<a href="https://cucumbersync.com/portal/index.php/settings/help">
+						<a href="#">
 							<img class="svg" alt="" src="settings/img/help.svg">
 							Help						</a>
 					</li>
-									<li>
-						<a id="logout" href="https://cucumbersync.com/portal/index.php?logout=true&amp;requesttoken=MBcbBXJmADc%2FLD8BQy5JaA4PfSstFVgCUVEKX25%2B%3ADciQE1TzxBxE7h%2BCVbOFFbn4cfkl40">
+									<li id="global-settings">
+						<a href="#" >
+							<img class="svg" alt="" src="settings/img/admin.svg">
+							Settings						</a>
+					</li>
+                    -->
+									<li id="sync-now">
+						<a href="#">
+							<img alt="" src="img/sync_contrast_icon.png">
+							Sync now						</a>
+					</li>
+									<li id="account-signout">
+						<a href="#">
 							<img class="svg" alt="" src="core/img/actions/logout.svg">
-							Log out						</a>
+							Sign out						</a>
 					</li>
 				</ul>
 				</div>
@@ -336,19 +346,9 @@
 				<div id="addressbooks">
 				<h2 data-id="addressbooks" tabindex="0" role="button">Address books</h2>
 					<ul class="addressbooklist">
-					<li data-id="1" data-backend="local" data-permissions="31">
-	<input name="active" checked="checked" title="Active" type="checkbox">
-	<label>Contacts</label>
-	<span class="actions">
-		<a data-original-title="Share" title="" class="icon-share share action" data-possible-permissions="31" data-item="1" data-item-type="addressbook"></a>
-		<a href="https://cucumbersync.com/portal/index.php/apps/contacts/addressbook/local/1/export" data-original-title="Export" title="" class="icon-download download action"></a>
-		<a data-original-title="CardDAV link" title="" class="icon-public carddav action"></a>
-		<a data-original-title="Edit" title="" class="icon-rename edit action"></a>
-		<a data-original-title="Delete" title="" class="icon-delete delete action"></a>
-	</span>
-</li></ul>
-					<ul aria-disabled="false" style="display: inline-block; width: auto; height: auto;" class="oc-addnew"><li><a class="oc-addnew-init">Add Address Book</a></li><li><input class="oc-addnew-name" style="display: none;" tabindex="0" autofocus="" id="add-address-book" placeholder="Display name" title="Add Address Book" type="text"><button style="display: none;" class="new-button primary icon-checkmark-white"></button></li></ul>
-									</div>
+                    </ul>
+					<input class="oc-addnew-name" style="display: none;" tabindex="0" autofocus="" id="add-address-book" placeholder="Display name" title="Add Address Book" type="text">
+				</div>
 				<div id="import">
 					<ul class="oc-addnew">
 						<li id="import-contacts"><a class="oc-addnew-init">Import</a></li>
@@ -1018,6 +1018,20 @@
 	</p>
 	<p id="addressbooks-ui-errormessage-p">&nbsp;
 	</p>
+</div>
+</script>
+
+
+<script id="fxaSignInTemplate" class="hidden" type="text/template">
+<div id="fxa-signin-div" class="account-signin">
+<p>
+	<label for="fxa-signin-username">Username</label>
+	<input id="fxa-signin-username" type="text" />
+</p>
+<p>
+	<label for="fxa-signin-password">Password</label>
+	<input id="fxa-signin-password" type="password" />
+</p>
 </div>
 </script>
 

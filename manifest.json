@@ -12,8 +12,8 @@
     "https://cucumbersync.com/"
   ],
   "icons": {
-    "16": "cucumbersync_16.png",
-    "128": "cucumbersync_128.png"
+    "16": "img/cucumbersync_16.png",
+    "128": "img/cucumbersync_128.png"
   },
   "app": {
     "background": {

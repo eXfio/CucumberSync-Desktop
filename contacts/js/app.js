@@ -205,7 +205,11 @@ OC.notify = function(params) {
 			});
 			// Hide the list while populating it.
 			this.$contactList.hide();
-			$.when(this.addressBooks.loadAddressBooks()).then(function(addressBooks) {
+
+            //Remove all except header row
+            this.$contactList.children().slice(1).remove();
+            
+            $.when(self.addressBooks.loadAddressBooks()).then(function(addressBooks) {
 				var deferreds = $(addressBooks).map(function(/*i, elem*/) {
 					return self.contacts.loadContacts(this.getBackend(), this.getId(), this.isActive());
 				});
@@ -250,6 +254,7 @@ OC.notify = function(params) {
 				console.log(response.message);
 				$(document).trigger('status.contacts.error', response);
 			});
+            
 			$(OC.Tags).on('change', this.groups.categoriesChanged);
 			this.bindEvents();
 			this.$toggleAll.show();
@@ -759,7 +764,7 @@ OC.notify = function(params) {
 				});
 				self.$rightContent.scrollTop(0);
 			});
-			// mark items whose title was hid under the top edge as read
+            // mark items whose title was hid under the top edge as read
 			/*this.$rightContent.scroll(function() {
 				// prevent too many scroll requests;
 				if(!self.isScrolling) {
@@ -1100,7 +1105,7 @@ OC.notify = function(params) {
 					$('body').bind('click', bodyListener);
 				}
 			});
-
+            
 			var addContact = function() {
 				if(self.contacts.addressBooks.count() > 0){
                     			console.log('add');
@@ -1714,7 +1719,7 @@ OC.notify = function(params) {
 
 $(document).ready(function() {
 
-    //FIXME - Support config
+    //TODO - Support config (see core/js/js.js)
     /*
     $.getScript(OC.generateUrl('apps/contacts/ajax/config.js'))
     .done(function() {
@@ -1724,6 +1729,116 @@ $(document).ready(function() {
 		console.log('Failed loading settings.', jqxhr, settings, exception);
 	});
     */
-    OC.Contacts.init();
 
+    $('#global-settings').on('click keydown', function(event) {
+		console.log('global-settings click event');
+        
+        //FIXME - use ocdialog or iframe
+        // Center window on screen.
+        var screenWidth = screen.availWidth;
+        var screenHeight = screen.availHeight;
+        var width = 500;
+        var height = 300;
+        
+        chrome.app.window.create('options.html', {
+            id: "cucumbersync-settings",
+            outerBounds: {
+                width: width,
+                height: height,
+                left: Math.round((screenWidth-width)/2),
+                top: Math.round((screenHeight-height)/2)
+            }
+        });                
+    });
+  
+    $('#sync-now').on('click keydown', function(event) {
+	    console.log('sync-now click event');
+        OC.Contacts.init();
+    });
+
+    $('#account-signout').on('click keydown', function(event) {
+		console.log('account-signout click event');
+
+        //TODO - support self hosted FxA account and/or sync server
+        var accountType = 'csync';
+        
+        CSync.AccountFactory.initFromSignIn(accountType)
+            .then(function() {
+                OC.Contacts.init();
+            })
+            .fail(function(error) {
+                var message = t('contacts', "Couldn't sign in - " + error);
+                OC.dialogs.alert(message, t('contacts', 'Error.'));
+            });
+        
+    });
+    
+    /*
+    var defer = $.Deferred();
+        
+    chrome.storage.local.get(null, function(items) {
+        if (chrome.runtime.lastError) {
+            console.error("Error getting storage - " + chrome.runtime.lastError);
+            defer.reject(chrome.runtime.LastError);
+        } else {
+            console.log("storage items before chrome.storage.local.clear()");
+            console.dir(items);
+            
+            chrome.storage.local.clear(function() {
+                if (chrome.runtime.lastError) {
+                    console.error("Error clearing storage - " + chrome.runtime.lastError);
+                    defer.reject(chrome.runtime.LastError);
+                } else {
+                    chrome.storage.local.get(function(items) {
+                        if (chrome.runtime.lastError) {
+                            console.error("Error getting storage - " + chrome.runtime.lastError);
+                            defer.reject(chrome.runtime.LastError);
+                        } else {
+                            console.log("storage items after chrome.storage.local.clear()");
+                            console.dir(items);
+                            defer.resolve(true);
+                        }
+                    });
+                }
+            });
+        }
+    });
+    */
+    
+    //Clear all storage except account settings
+    CSync.clearStorage()
+        .then(function() {
+            //Signin and display contacts
+            var defer = $.Deferred();
+            
+            CSync.AccountFactory.initFromStorage()
+                .then(function() {
+                    defer.resolve(true);
+                })
+                .fail(function(error) {
+                    if (error === 'Account settings not found') {
+                        //TODO - support self hosted FxA account and/or sync server
+                        var accountType = 'csync';
+                        
+                        CSync.AccountFactory.initFromSignIn(accountType)
+                            .then(function() {
+                                defer.resolve(true);
+                            })
+                            .fail(function(error) {
+                                defer.reject(error);
+                            });
+                    } else {
+                        defer.reject(error);
+                    }                    
+                });
+            return defer.promise();
+        })
+        .then(function() {
+            OC.Contacts.init();
+        })
+        .fail(function(error) {
+            //show error dialog
+            var message = t('contacts', "Couldn't initialise Contacts app - " + error);
+            OC.dialogs.alert(message, t('contacts', 'Error.'));
+        });
 });

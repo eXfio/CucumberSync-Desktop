@@ -1,6 +1,7 @@
 OC.Contacts = OC.Contacts || {};
+CSync = CSync || {};
 
-(function(window, $, OC) {
+(function(window, $, OC, CSync) {
 	'use strict';
 
 	var JSONResponse = function(jqXHR) {
@@ -53,84 +54,68 @@ OC.Contacts = OC.Contacts || {};
 	*
 	* @param string user The user to query for. Defaults to current user
 	*/
-	var Storage = function(user) {
+	var Storage = function(user, account) {
 		this.user = user ? user : OC.currentUser;
+        this.account = account ? account : CSync.account;
         this.weaveClient = null;
         this.keyPair =null;
 
-        //reset local storage
-        OC.localStorage.clear();
-        
         weave.util.Log.setLevel("debug");
     };
 
+    Storage.prototype.isAuthenticated = function() {
+        weave.util.Log.debug("Storage.isAuthenticated()");
+        return (this.account && this.account !== null && this.account.isInitialized());
+    }
+    
 	Storage.prototype.initWeaveClient = function() {
         weave.util.Log.debug("Storage.initWeaveClient()");
+
+        if (!this.isAuthenticated()) {
+            return $.Deferred().reject("Account not authenticated");
+        }
         
         var self = this;
         
         var defer = $.Deferred();
         
         if ( this.weaveClient !== null ) {
-            defer.resolve(true);
+            return defer.resolve(true);
         } else {
 
-            //FIXME - make weave params configurable
-            
-            var weaveParams = {
-                accountServer: 'DEV ACCOUNT SERVER',
-                tokenServer: 'DEV TOKEN SERVER',
-                user: 'DEV USERNAME',
-                password: 'DEV PASSWORD'
-            };
-
-            weave.util.Log.debug("Call weave.account.fxa.FxAccount.init() with params: " + JSON.stringify(weaveParams));
-            var weaveAccount = new weave.account.fxa.FxAccount();
-            weaveAccount.init(weaveParams)
-                .then(function() {
-                    //get WeaveClient instance
-                    try {
-                        self.weaveClient = weave.client.WeaveClientFactory.getInstance(weaveAccount);
-                        //defer.resolve(true);
-                    } catch(e) {
-                        defer.reject({error: true, message: e.message});
-                        return;
-                    }
-
+            //init WeaveClient instance
+            try {
+                this.weaveClient = weave.client.WeaveClientFactory.getInstance(this.account.getWeaveAccount());
+            } catch(e) {
+                weave.util.Log.error("Couldn't initialise weave client - " + e.message);
+                return defer.reject({error: true, message: e.message});
+            }
                     
-                    //generate ephemeral keyPair to encrypt localStorage
-                    var ikm  = forge.util.createBuffer(forge.random.getBytesSync(32));
-                    var info = forge.util.createBuffer("accounts.cucumberysync.com");
-                    var salt = forge.util.createBuffer();
-
-                    weave.crypto.HKDF.derive(ikm, info, salt, 2*32)
-                        .then(
-                            function(derived) {
-                                self.keyPair = {
-	                                cryptKey: forge.util.createBuffer(derived.getBytes(32)),
-	                                hmacKey:  forge.util.createBuffer(derived.getBytes())
-                                };
-	                            
-	                            weave.util.Log.info("Successfully generated key pair");
-	                            weave.util.Log.debug("ikm: " + ikm.toHex() + ", crypt key: " + self.keyPair.cryptKey.toHex() + ", hmac key: " + self.keyPair.hmacKey.toHex());
-                                
-                                defer.resolve(true);
-                            },
-                            function(error) {
-                                var message = (error instanceof Object && error.message ? error.message : error);
-                                weave.util.Log.error("Couldn't generate key pair - " + message);
-                                
-                                defer.reject({error: true, message: message});
-                            }
-                        );
-                })
-                .fail(function(error) {
-                    var message = (error instanceof Object && error.message ? error.message : error);
-                    console.error("Couldn't instantiate WeaveClient - " + message);
-                    defer.reject({error: true, message: message});
-                });
+            //generate ephemeral keyPair to encrypt localStorage            
+            var ikm  = forge.util.createBuffer(forge.random.getBytesSync(32));
+            var info = forge.util.createBuffer("accounts.cucumberysync.com");
+            var salt = forge.util.createBuffer();
             
-	    };
+            weave.crypto.HKDF.derive(ikm, info, salt, 2*32)
+                .then(
+                    function(derived) {
+                        self.keyPair = {
+	                        cryptKey: forge.util.createBuffer(derived.getBytes(32)),
+	                        hmacKey:  forge.util.createBuffer(derived.getBytes())
+                        };
+	                    
+	                    weave.util.Log.info("Successfully generated key pair");
+	                    weave.util.Log.debug("ikm: " + ikm.toHex() + ", crypt key: " + self.keyPair.cryptKey.toHex() + ", hmac key: " + self.keyPair.hmacKey.toHex());
+                        
+                        defer.resolve(true);
+                    },
+                    function(error) {
+                        var message = (error instanceof Object && error.message ? error.message : error);
+                        console.error("Couldn't generate key pair - " + message);
+                        defer.reject({error: true, message: message});
+                    }
+                );            
+	    }
 
         return defer.promise();
     }
@@ -589,8 +574,9 @@ OC.Contacts = OC.Contacts || {};
 	 */
 	Storage.prototype.addContact = function(backend, addressBookId) {
 		console.log('Storage.addContact', backend, addressBookId);
+        
         //return skeleton contact with uid only
-        var uid = "foobar";
+        var uid = uuid.v4();
         var contact = {
             metadata: {
                 id: uid,
@@ -598,11 +584,27 @@ OC.Contacts = OC.Contacts || {};
                 displayname: "", //get FN from vcard props
                 lastmodified: null,
                 owner: "foo", //FIXME - confirm default
-                parent: "exfiocontacts", //FIXME - confirm default
+                backend: backend,
+                parent: addressBookId
             },
             data: {}
         };
-        return $.when(contact);
+
+        //Write wbo to local storage
+        var keyContact = 'contacts::' + backend + '::' + addressBookId + '::contact::' + uid;
+
+        var jcardComponent = new ICAL.Component("vcard");
+        jcardComponent.addPropertyWithValue("uid", uid);
+        var payload = JSON.stringify(jcardComponent.toJSON());
+        
+        var wbo = new weave.storage.WeaveBasicObject();
+        wbo.id = uid;
+        wbo.payload = weave.crypto.PayloadCipher.encrypt(payload, this.keyPair);
+
+        return OC.localStorage.setItem(keyContact, wbo)
+            .then(function() {
+                return $.when(contact);
+            });
         
         /*
 		return this.requestRoute(
@@ -622,11 +624,42 @@ OC.Contacts = OC.Contacts || {};
 	 */
 	Storage.prototype.deleteContact = function(backend, addressBookId, contactId) {
 		console.log('Storage.deleteContact', backend, addressBookId, contactId);
+
+        var self = this;
+
+        var keyContact = 'contacts::' + backend + '::' + addressBookId + '::contact::' + contactId;        
+
+        var defer = $.Deferred();
+
+        //delete contact from remote storage
+        self.weaveClient.delete('exfiocontacts', contactId)
+            .then(function() {
+                defer.resolve({error:false});
+            })
+            .fail(function(error) {
+                defer.reject({error:true, message:error});
+            });
+
+        return defer.promise()
+            .then(function() {
+                //delete from local storage
+                return OC.localStorage.removeItem(keyContact)
+            })
+            .then(function() {
+                return $.when({error:false});
+            })
+            .fail(function(error) {
+                var message = error.message ? error.message : error;
+                console.error("Couldn't delete contact - " + message);
+            });
+        
+		/*
 		return this.requestRoute(
 			'addressbook/{backend}/{addressBookId}/contact/{contactId}',
 			'DELETE',
 			{backend: backend, addressBookId: addressBookId, contactId: contactId}
 		);
+		*/
 	};
 
 	/**
@@ -810,17 +843,30 @@ OC.Contacts = OC.Contacts || {};
                 var jcardProp = null;
                 var jcardProps = jcardComponent.getAllProperties(params.name.toLowerCase());
 
-
                 //first remove old property
-                if ( 'checksum' in params && params.checksum === 'new' ) {
-                    //new property, nothing to do
+                if ( oldchecksum === null ) {
+                    //single property, make sure we remove old one if it exists
+                    if ( jcardProps.length == 0 ) {
+                        //new property, nothing to do
+                    } else if ( jcardProps.length == 1 ) {
+                        jcardProp = jcardProps[0];
+                        console.debug("jcard prop in: '" + jcardProp.name + "':" + JSON.stringify(jcardProp.toJSON()));
+
+                        jcardComponent.removeProperty(jcardProp);
+                    } else {
+                        throw new Error("Multiple matching properties");
+                    }
+                    
+                } else if ( oldchecksum === 'new' ) {
+                    //new multi property, nothing to do
                 } else {
+                    //existing multi property, find it and remove it
                     if ( jcardProps.length == 1 ) {
                         jcardProp = jcardProps[0];
-                    } else if ( jcardProps.length > 1 && 'checksum' in params ) {
+                    } else if ( jcardProps.length > 1 ) {
                         for (var i = 0; i < jcardProps.length; i++) {
                             var propChecksum = md5(JSON.sortify(jcardProps[i].toJSON()));
-                            if ( params.checksum == propChecksum ) {
+                            if ( oldchecksum == propChecksum ) {
                                 jcardProp = jcardProps[i];
                                 break;
                             }
@@ -895,7 +941,7 @@ OC.Contacts = OC.Contacts || {};
                 return defer.promise();
             })
             .then(function(wbo) {
-                //3. update local storage
+                //4. update local storage
                 wbo.payload = weave.crypto.PayloadCipher.encrypt(wbo.payload, self.keyPair);
                 return OC.localStorage.setItem(keyContact, wbo)
                     .then(function() {
@@ -1148,4 +1194,4 @@ OC.Contacts = OC.Contacts || {};
 
 	OC.Contacts.Storage = Storage;
 
-})(window, jQuery, OC);
+})(window, jQuery, OC, CSync);

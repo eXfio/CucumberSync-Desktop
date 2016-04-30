@@ -80,7 +80,7 @@
 #header .logo-icon {
 	/* display logo so appname can be shown next to it */
 	display: inline-block;
-	background-image: url(../../cucumbersync.svg);
+	background-image: url(../../img/cucumbersync.svg);
 	background-size: contain;
 	background-repeat: no-repeat;
 	width: 34px;
@@ -357,6 +357,35 @@
 #header .avatardiv.avatardiv-shown + #expandDisplayName {
 	display: none;
 }
+
 #header #expand {
 	display: block;
 }
+
+/* CucumberSync Overrides */
+
+/* Show cog icon instead of avatar */
+#header .avatardiv {
+	background-image: url(../../img/cog_contrast.svg);
+	background-size: contain;
+	background-repeat: no-repeat;
+    border-radius: initial;
+	margin-top: 4px;
+	height: 26px;
+	width: 26px;
+}
+
+#expand .avatardiv {
+	opacity: .7;
+}
+#expand:hover .avatardiv,
+#expand:focus .avatardiv,
+#expand:active .avatardiv {
+	opacity: 1;
+}
+
+/* Always hide display name */
+#header #expandDisplayName {
+	display: none;
+}
+
